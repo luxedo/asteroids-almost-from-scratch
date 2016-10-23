@@ -19,7 +19,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 "use strict";
 
-const VERSION = "v1.1";
 // keyboard handler
 let Key = {
   _pressed: {},
@@ -43,7 +42,7 @@ let Game = {
 };
 
 // Screens objects
-let versusScreen = {}
+let playScreen = {}
 let gameOverScreen = {}
 let startScreen = {}
 let creditsScreen = {}
@@ -91,17 +90,6 @@ Game.start = function() {
   Game.canvas.height = Game.height;
   Game.context = Game.canvas.getContext("2d"); // Get canvas context
   document.getElementById("game-frame").appendChild(Game.canvas); // Add canvas to game-frame
-
-  // mask outside border
-  Game.maskCanvas = document.createElement("canvas"); // Create canvas
-  Game.maskCanvas.setAttribute("id", "game-mask");
-  Game.maskCanvas.width = Game.width;
-  Game.maskCanvas.height = Game.height;
-  Game.maskContext = Game.maskCanvas.getContext("2d"); // Get canvas context
-  Game.maskContext.fillRect(0, 0, Game.width, Game.height);
-  Game.maskContext.globalCompositeOperation = "xor"
-  Game.maskContext.arc(Game.width/2, Game.height/2, Game.radius+1, 0, 2*Math.PI);
-  Game.maskContext.fill();
 
   // Sounds
   Game.explosionSound = new Audio(explosionURL);

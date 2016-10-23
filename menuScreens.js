@@ -20,17 +20,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use strict";
 
 const gameOverPositions = [[180, 360], [230, 410]]
-const startScreenPositions = [[190, 290], [190, 340], [200, 390]]
+const startScreenPositions = [[190, 310], [190, 360]]
 
 
 creditsScreen.init = () => {
-  creditsScreen.stars = versusScreen.makeStars()
+  creditsScreen.stars = playScreen.makeStars()
 }
 creditsScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
   // draw board
-  drawCircle(Game.width/2, Game.height/2, Game.radius)
-  creditsScreen.stars.forEach((value) => drawPoint(...value));
   // add text
   writeCentered(50, "asteroids", 4);
   writeCentered(100, "almost from scratch", 2);
@@ -60,23 +58,18 @@ creditsScreen.update = () => {
 }
 
 startScreen.init = () => {
-  startScreen.stars = versusScreen.makeStars()
   startScreen.arrow = new ShipCursor(startScreenPositions, player1Vectors, 3);
 }
 startScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
-  // draw board
-  drawCircle(Game.width/2, Game.height/2, Game.radius)
-  startScreen.stars.forEach((value) => drawPoint(...value));
 
   startScreen.arrow.draw()
   writeCentered(80, "asteroids", 5);
   writeCentered(150, "almost from scratch", 2.7);
-  writeCentered(280, "1p start", 2);
-  writeCentered(330, "2p start", 2);
-  writeCentered(380, "credits", 2);
-  writeCentered(470, "'wasd' - player 1     player 2 - arrows", 1.2);
-  writeCentered(500, "enter - go            esc - go back", 1.2);
+  writeCentered(300, "start", 2);
+  writeCentered(350, "credits", 2);
+  writeCentered(480, "enter - go        esc - go back", 1.2);
+  writeCentered(510, "controls - arrows and spacebar", 1.2);
   writeCentered(570, VERSION);
 }
 startScreen.update = () => {
@@ -85,23 +78,19 @@ startScreen.update = () => {
     if (Game.keyTimeout > Date.now()) return;
     Game.keyTimeout = Date.now()+200;
     Game.laser2();
-    if (startScreen.arrow.current === 0) Game.changeState(enemyScreen);
-    else if (startScreen.arrow.current === 1) Game.changeState(versusScreen);
-    else if (startScreen.arrow.current === 2) Game.changeState(creditsScreen);
+    if (startScreen.arrow.current === 0) Game.changeState(playScreen);
+    else if (startScreen.arrow.current === 1) Game.changeState(creditsScreen);
   }
 }
 
 gameOverScreen.init = () => {
   winner = (Game.player2.dead?"player 1 wins":"player 2 wins")
   winner = (Game.player2.dead && Game.player1.dead?"draw":winner)
-  gameOverScreen.stars = versusScreen.makeStars()
+  gameOverScreen.stars = playScreen.makeStars()
   gameOverScreen.arrow = new ShipCursor(gameOverPositions, player1Vectors, 3);
 }
 gameOverScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
-  // draw board
-  drawCircle(Game.width/2, Game.height/2, Game.radius)
-  gameOverScreen.stars.forEach((value) => drawPoint(...value));
 
   gameOverScreen.arrow.draw()
   writeCentered(100, "GAME OVER", 5);
@@ -118,12 +107,12 @@ gameOverScreen.update = () => {
     Game.keyTimeout = Date.now()+200;
     Game.laser2();
     if (gameOverScreen.arrow.current === 0) {
-      if (gameMode === "versus") Game.changeState(versusScreen);
+      if (gameMode === "versus") Game.changeState(playScreen);
       else Game.changeState(enemyScreen);
     }
     else if (gameOverScreen.arrow.current === 1) Game.changeState(startScreen);
   } else if (Key.isDown(27)) {
     Game.laser1();
-    Game.changeState(versusScreen);
+    Game.changeState(playScreen);
   }
 }

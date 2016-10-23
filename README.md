@@ -8,14 +8,10 @@ The game is based in `html5 canvas`, `CSS` and `ES6 javascript`. No extra librar
 Since I've already worked on a project to reproduce [spacewar-almost-from-scratch](https://armlessjohn404.github.io/spacewar-almost-from-scratch/), I'll be using much of it in here.
 
 ## GOALS
-* Add `LICENSE.md` and `README.md
-* Copy the `spacewar` files
-* Host somewhere
-* Modify `start screen`
-* Modify `credits screen`
-* Modify `game over screen`
-* Make screens square
-* Remove gravity and `blackhole`
+* ~~Add `LICENSE.md` and `README.md~~
+* ~~Copy the `spacewar` files~~
+* ~~Host somewhere~~
+* ~~Make screens square~~
 * Modify `Ship` class
 * Create `Asteroid` class
 * Draw asteroids
@@ -26,6 +22,10 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * Create life mechanics
 * Create High scores screen
 * Find someplace to host High scores
+* Modify `start screen`
+* Modify `credits screen`
+* Modify `game over screen`
+* Remove gravity and `blackhole`
 * Modify sounds
 * Improve webpage
 * Get play testers feedback
@@ -43,6 +43,9 @@ This project is under a [GNU GPL3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 For now, I'll be hosting it in [github pages](https://pages.github.com/) since it's easy deploy. Check it out [here](https://armlessjohn404.github.io/asteroids-almost-from-scratch/)
 
 ## 00:30 - Copy the `spacewar` files
-I copied the [spacewar](https://armlessjohn404.github.io/spacewar-almost-from-scratch/) I made to the project folder and changed the favicon, the main color and a few tweaks. In the end it was looking like this:
+Since this game is also made with vector graphics, I copied the [spacewar](https://armlessjohn404.github.io/spacewar-almost-from-scratch/) I made to the project folder and changed the favicon, the main color and a few tweaks. In the end it was looking like this:
 
 ![spacewar copy](report-assets/spacewar-copy.png "spacewar copy")
+
+## 00:45 - Make screens square
+Asteroids have a square screen, so I removed the stars and the round mask of the spacewar.

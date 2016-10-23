@@ -38,37 +38,35 @@ const player2Keys = {
   keyRight: 39,
 };
 
-versusScreen.init = () => {
+playScreen.init = () => {
   // Setup background
-  versusScreen.stars = versusScreen.makeStars();
+  playScreen.stars = playScreen.makeStars();
   // Create players
   Game.player1 = new Ship(...p1Spawn, player1Keys, player1Vectors, 1.5, Game.laser1);
   Game.player2 = new Ship(...p2Spawn, player2Keys, player2Vectors, 1.5, Game.laser2);
   Game.player1.updateRotation(Math.PI/4);
   Game.player2.updateRotation(-3*Math.PI/4);
-  versusScreen.blackhole = new Blackhole(Game.width/2, Game.height/2)
+  playScreen.blackhole = new Blackhole(Game.width/2, Game.height/2)
 
-  versusScreen.ended = false;
+  playScreen.ended = false;
   gameMode = "versus";
 }
 
-versusScreen.draw = function () {
+playScreen.draw = function () {
   Game.context.clearRect(0, 0, Game.width, Game.height);
   // draw board
-  drawCircle(Game.width/2, Game.height/2, Game.radius)
-  versusScreen.stars.forEach((value) => drawPoint(...value));
   // draw sprites
   Game.player1.draw();
   Game.player2.draw();
-  versusScreen.blackhole.draw();
+  playScreen.blackhole.draw();
   // draw mask to hide things outside the border
   Game.context.drawImage(Game.maskCanvas, 0, 0)
 }
 
-versusScreen.update = function () {
+playScreen.update = function () {
   Game.player1.update();
   Game.player2.update();
-  versusScreen.blackhole.update();
+  playScreen.blackhole.update();
   addGravity(Game.player1, Game.width/2, Game.height/2, GRAVITY);
   addGravity(Game.player2, Game.width/2, Game.height/2, GRAVITY);
 
@@ -81,14 +79,14 @@ versusScreen.update = function () {
     for (let j=0; j<collisionArr2.length; j++) {
       let sprite1 = collisionArr1[i];
       let sprite2 = collisionArr2[j];
-      if (versusScreen.checkCollision(sprite1, sprite2)) {
+      if (playScreen.checkCollision(sprite1, sprite2)) {
         sprite1.explode();
         sprite2.explode();
       }
     }
   }
-  if ((Game.player1.dead || Game.player2.dead) && !versusScreen.ended) {
-    versusScreen.ended = true;
+  if ((Game.player1.dead || Game.player2.dead) && !playScreen.ended) {
+    playScreen.ended = true;
     setTimeout(() => Game.changeState(gameOverScreen), 1000);
   }
   if (Key.isDown(27)) {
@@ -97,13 +95,13 @@ versusScreen.update = function () {
   }
 }
 
-versusScreen.rotateVector = (vector, angle) => {
+playScreen.rotateVector = (vector, angle) => {
   let x = (vector[0]*Math.cos(angle)-vector[1]*Math.sin(angle));
   let y = (vector[1]*Math.cos(angle)+vector[0]*Math.sin(angle));
   return [x, y]
 }
 
-versusScreen.checkCollision = function(sprite1, sprite2) {
+playScreen.checkCollision = function(sprite1, sprite2) {
   // Limits of the sprite
   const p1c = sprite1.corners;
   const p2c = sprite2.corners;
@@ -113,8 +111,8 @@ versusScreen.checkCollision = function(sprite1, sprite2) {
   // Calculate the rotation to align the p1 bounding box
   const angle = Math.atan2(p1cT[2][1], p1cT[2][0]);
   // Rotate vetcors to align
-  const p1cTR = p1cT.map(val => versusScreen.rotateVector(val, angle));
-  const p2cTR = p2cT.map(val => versusScreen.rotateVector(val, angle));
+  const p1cTR = p1cT.map(val => playScreen.rotateVector(val, angle));
+  const p2cTR = p2cT.map(val => playScreen.rotateVector(val, angle));
   // Calculate extreme points of the bounding boxes
   const p1left = Math.min(...p1cTR.map(value => value[0]))
   const p1right = Math.max(...p1cTR.map(value => value[0]))
@@ -130,7 +128,7 @@ versusScreen.checkCollision = function(sprite1, sprite2) {
   return false;
 }
 
-versusScreen.makeStars = () => {
+playScreen.makeStars = () => {
   let stars = []
   let [xc, yc] = [Game.width/2, Game.height/2]
   while (stars.length < STARS) {
@@ -143,7 +141,7 @@ versusScreen.makeStars = () => {
 
 // Play against AI
 enemyScreen.init = () => {
-  versusScreen.init()
+  playScreen.init()
   Game.player2.keyUp = undefined;
   Game.player2.keyDown = undefined;
   Game.player2.keyLeft = undefined;
@@ -151,9 +149,9 @@ enemyScreen.init = () => {
   gameMode = "enemy";
   Game.player2.evade();
 };
-enemyScreen.draw = versusScreen.draw;
+enemyScreen.draw = playScreen.draw;
 enemyScreen.update = () => {
-  versusScreen.update();
+  playScreen.update();
   if (!Game.player2.dead && !Game.player2.evading) {
     // basic vectors
     let p1dx = Game.player1.x-Game.player2.x;

@@ -260,7 +260,7 @@ class Ship extends BaseSprite {
         this.updateRotation();
       };
       // black hole collision
-      let playerToBlackhole = Math.hypot(this.x-versusScreen.blackhole.x, this.y-versusScreen.blackhole.y)
+      let playerToBlackhole = Math.hypot(this.x-playScreen.blackhole.x, this.y-playScreen.blackhole.y)
       if (playerToBlackhole <= BLACKHOLE_SIZE) this.respawnSprite(0, 0);
     }
     // update shots
