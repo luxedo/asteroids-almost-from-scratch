@@ -20,16 +20,28 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use strict";
 
 const p1Spawn = [150, 150];
+const player1Vectors = [[[5, 0], [-4, -3], [-3, -2], [-3, 2], [-4, 3], [5, 0]]];
 const player1Keys = {
   keyUp: 32,
   keyDown: 38,
   keyLeft: 37,
   keyRight: 39,
 };
+const BIG_ASTEROID = 12;
+const MED_ASTEROID = 6;
+const SMA_ASTEROID = 3;
+const ASTEROID_MAX_SPEED = 2;
 
 playScreen.init = () => {
   // Create players
   Game.player1 = new Ship(...p1Spawn, player1Keys, player1Vectors, 1.5, Game.laser1);
+  Game.asteroids = []
+  Game.asteroids.push(randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED));
+  Game.asteroids.push(randomAsteroid(MED_ASTEROID, ASTEROID_MAX_SPEED));
+  Game.asteroids.push(randomAsteroid(SMA_ASTEROID, ASTEROID_MAX_SPEED));
+  Game.asteroids.push(randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED));
+  Game.asteroids.push(randomAsteroid(MED_ASTEROID, ASTEROID_MAX_SPEED));
+  Game.asteroids.push(randomAsteroid(SMA_ASTEROID, ASTEROID_MAX_SPEED));
   playScreen.ended = false;
 }
 
@@ -37,11 +49,12 @@ playScreen.draw = function () {
   Game.context.clearRect(0, 0, Game.width, Game.height);
   // draw sprites
   Game.player1.draw();
+  Game.asteroids.forEach(value => value.draw());
 }
 
 playScreen.update = function () {
   Game.player1.update();
-
+  Game.asteroids.forEach(value => value.update());
   // check for collision
   // let collisionArr1 = Game.player1.shots.slice();
   // collisionArr1.push(Game.player1);

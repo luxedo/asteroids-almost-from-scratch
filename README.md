@@ -5,7 +5,7 @@ This is an attempt of reproducing the game [asteroids](https://en.wikipedia.org/
 
 The game is based in `html5 canvas`, `CSS` and `ES6 javascript`. No extra libraries or engines will be used.
 
-Since I've already worked on a project to reproduce [spacewar-almost-from-scratch](https://armlessjohn404.github.io/spacewar-almost-from-scratch/), I'll be using much of it in here.
+Since I've already worked on a project to reproduce [spacewar-almost-from-scratch](https://armlessjohn404.github.io/spacewar-almost-from-scratch/), I'll be using much of it in here. If you want to see how it was done, check it out on [GitHub](https://github.com/ArmlessJohn404/spacewar-almost-from-scratch).
 
 ## GOALS
 * ~~Add `LICENSE.md` and `README.md~~
@@ -15,12 +15,13 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Remove gravity, player2 and `blackhole`~~
 * ~~Modify `Ship` class~~
 * ~~Modify `Shot` class~~
-* Create `Asteroid` class
-* Draw asteroids
+* ~~Create `Asteroid` class~~
+* ~~Draw asteroids~~
 * Create `Saucer` class
 * Draw saucers
 * Create `Score` class
 * Modify collision mechanics
+* Create level mechanics
 * Create life mechanics
 * Create High scores screen
 * Find someplace to host High scores
@@ -60,3 +61,24 @@ The ship sprite is much simpler in Asteroids. So it was easy to draw: ![ship](re
 
 ## 01:30 - Modify `Shot` class
 The shots were also easy. I just changed some properties and done.
+
+## 02:50 - Create `Asteroid` class and draw asteroids
+To create the asteroid class, I inherited the `BaseClass`. The only addition was a rotation speed property that makes the asteroid spins continuously.
+
+To draw the asteroids, I made a function that randomly generates points in a grid and used those vectors.
+
+```javascript
+function makeAsteroidVectors() {
+  let vectors = [randomCoords(0, 0), randomCoords(1, 0), randomCoords(2, 0), randomCoords(3, 0),
+                 randomCoords(3, 1), randomCoords(2, 1), randomCoords(3, 2), randomCoords(3, 3),
+                 randomCoords(2, 3), randomCoords(1, 3), randomCoords(0, 3), randomCoords(0, 2),
+                 randomCoords(0, 1)];
+  vectors.push(vectors[0])
+  return [vectors];
+}
+```
+
+Luckly for me, in the constructor, I have made the vectors translate to make the centroid of the object the coordinates (0, 0), then it's easy to rotate the object around the centroid. And there's also a scaler in the constructor to chose the size of the objects which came in handy to make asteroids of different sizes.
+This is the end result
+
+![asteroid class](report-assets/asteroid-class.gif "asteroid class")
