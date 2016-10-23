@@ -30,7 +30,7 @@ const BLACKHOLE_SIZE = 12;
 const MAX_ACCEL = 1;
 const MAX_SPEED = 1;
 const BLAST_SIZE = 50;
-const VECTOR_COLOR = "#0F0"
+const VECTOR_COLOR = "#FFF"
 const player1Vectors = [
   [[8, 0], [1, 2], [-1, 2], [-8, 1], [-8, -1], [-1, -2], [1, -2], [8, 0]],
   [[-1,  2], [-6,  4], [-8,  4], [-5,  1.5]],

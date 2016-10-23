@@ -27,6 +27,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * Create High scores screen
 * Find someplace to host High scores
 * Modify sounds
+* Improve webpage
 * Get play testers feedback
 * List requests/bugs
 * Fix requests/bugs
@@ -40,3 +41,8 @@ This project is under a [GNU GPL3](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 ## 00:15 - Host somewhere
 For now, I'll be hosting it in [github pages](https://pages.github.com/) since it's easy deploy. Check it out [here](https://armlessjohn404.github.io/asteroids-almost-from-scratch/)
+
+## 00:30 - Copy the `spacewar` files
+I copied the [spacewar](https://armlessjohn404.github.io/spacewar-almost-from-scratch/) I made to the project folder and changed the favicon, the main color and a few tweaks. In the end it was looking like this:
+
+![spacewar copy](report-assets/spacewar-copy.png "spacewar copy")
