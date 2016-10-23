@@ -20,17 +20,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use strict";
 
 const ROTATION_SPEED = 6*Math.PI/180;
-const THRUSTER_ACCELERATION = 0.07;
+const THRUSTERS_ACCELERATION = 0.07;
 const MAX_SPEED = 3;
-const FIRE_LENGTH = 5;
-const SHOT_DISTANCE = 250;
-const SHOT_SPEED = 2;
-const SHOT_SIZE = 5;
-const SHOT_INTERVAL = 300;
+const THRUSTERS_LENGTH = 5;
+const SHOT_DISTANCE = 500;
+const SHOT_SPEED = 5;
+const SHOT_SIZE = 1;
+const SHOT_INTERVAL = 200;
 const BLAST_SIZE = 50;
 const VECTOR_COLOR = "#FFF"
-const player1Vectors = [
-  [[5, 0], [-4, -3], [-3, -2], [-3, 2], [-4, 3], [5, 0]]];
+const player1Vectors = [[[5, 0], [-4, -3], [-3, -2], [-3, 2], [-4, 3], [5, 0]]];
 
 function drawArray(array, width=2, color=VECTOR_COLOR) {
   array = array.slice();
@@ -211,7 +210,7 @@ class Ship extends BaseSprite {
       .map(vector => [vector[0]*this.size+this.x, vector[1]*this.size+this.y])));
     // draw thrusters fire
     if (this.thrusters && !this.dead) {
-      let fireLength = Math.random()*FIRE_LENGTH*this.size;
+      let fireLength = Math.random()*THRUSTERS_LENGTH*this.size;
       let fireArray = [this.rear, [this.rear[0]-fireLength*Math.cos(this.rotation), this.rear[1]-fireLength*Math.sin(this.rotation)]];
       drawArray(fireArray, 4);
     }
@@ -263,8 +262,8 @@ class Ship extends BaseSprite {
     // fire thrusters
     this.thrusters = true;
     // calculate new velocity vector
-    this.speedX += THRUSTER_ACCELERATION*Math.cos(this.rotation);
-    this.speedY += THRUSTER_ACCELERATION*Math.sin(this.rotation);
+    this.speedX += THRUSTERS_ACCELERATION*Math.cos(this.rotation);
+    this.speedY += THRUSTERS_ACCELERATION*Math.sin(this.rotation);
     Game.thrusters();
   }
   updateRotation(angle) {
@@ -299,26 +298,6 @@ class Ship extends BaseSprite {
       array.push([[x, y], [x+1, y+1]])
     }
     return array;
-  }
-  evade() {
-    this.evading = true;
-    let angle = Math.random()*Math.PI - Math.PI;
-    let rot = setInterval(() => {
-      let angleDelta = this.rotation+angle;
-      angleDelta = (angleDelta<Math.PI?angleDelta:angleDelta-2*Math.PI)
-      angleDelta = (angleDelta<-Math.PI?angleDelta+2*Math.PI:angleDelta)
-      angleDelta = (Math.abs(angleDelta)<ROTATION_SPEED?angleDelta:Math.sign(angleDelta)*ROTATION_SPEED);
-      this.updateRotation(this.rotation+angleDelta);
-      if (Math.abs(angleDelta) < 0.01) window.clearInterval(rot);
-    } ,1000/Game.FPS)
-    let thru = setInterval(() => {
-      this.fireThrusters();
-    },1000/Game.FPS)
-    setTimeout(() => {
-      window.clearInterval(thru);
-      window.clearInterval(rot);
-      this.evading = false;
-    }, 500)
   }
 }
 

@@ -14,7 +14,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Make screens square~~
 * ~~Remove gravity, player2 and `blackhole`~~
 * ~~Modify `Ship` class~~
-* Modify `Shot` class
+* ~~Modify `Shot` class~~
 * Create `Asteroid` class
 * Draw asteroids
 * Create `Saucer` class
@@ -54,7 +54,9 @@ Asteroids have a square screen, so I removed the stars and the round mask of the
 ## 01:00 - Remove gravity, player2 and `blackhole`
 The game does not have the `blackhole` (star) in the middle as `Spacewar` has, so it has been removed along with the gravity mechanics. Also, I don't want to add a 2 player mode because in the original game the players took turns playing. Instead I'll try to make a online highscore.
 
-## 01:00 - Modify `Ship` class
+## 01:20 - Modify `Ship` class
 The ship sprite is much simpler in Asteroids. So it was easy to draw: ![ship](report-assets/ship.png "ship")
-![ship thrusters](report-assets/ship-thrusters.png "ship thrusters")
-. I changed some properties to make the ship more agile and interesting to play.
+![ship thrusters](report-assets/ship-thrusters.png "ship thrusters"). I changed some properties to make the ship more agile and interesting to play.
+
+## 01:30 - Modify `Shot` class
+The shots were also easy. I just changed some properties and done.
