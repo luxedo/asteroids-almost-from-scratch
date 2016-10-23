@@ -19,30 +19,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 "use strict";
 
-const ROTATION_SPEED = 4*Math.PI/180;
-const THRUSTER_SPEED = 0.01;
-const FIRE_LENGTH = 10;
+const ROTATION_SPEED = 6*Math.PI/180;
+const THRUSTER_ACCELERATION = 0.07;
+const MAX_SPEED = 3;
+const FIRE_LENGTH = 5;
 const SHOT_DISTANCE = 250;
 const SHOT_SPEED = 2;
 const SHOT_SIZE = 5;
 const SHOT_INTERVAL = 300;
-const MAX_ACCEL = 1;
-const MAX_SPEED = 1;
 const BLAST_SIZE = 50;
 const VECTOR_COLOR = "#FFF"
 const player1Vectors = [
-  [[8, 0], [1, 2], [-1, 2], [-8, 1], [-8, -1], [-1, -2], [1, -2], [8, 0]],
-  [[-1,  2], [-6,  4], [-8,  4], [-5,  1.5]],
-  [[-1, -2], [-6, -4], [-8, -4], [-5, -1.5]]
-];
-const player2Vectors = [
-  [[8, 0], [1, 2], [-8, 2], [-8, -2], [1, -2], [8, 0]],
-  [[-1,  2], [-6,  4], [-8,  4], [-8,  2]],
-  [[-1, -2], [-6, -4], [-8, -4], [-8, -2]],
-  [[8, 0], [-8, 0]]
-];
+  [[5, 0], [-4, -3], [-3, -2], [-3, 2], [-4, 3], [5, 0]]];
 
-function drawArray(array, width=1, color=VECTOR_COLOR) {
+function drawArray(array, width=2, color=VECTOR_COLOR) {
   array = array.slice();
   // setup style
   Game.context.lineWidth = width;
@@ -114,18 +104,6 @@ function writeText(x, y, text, size=1, width=1, color=VECTOR_COLOR) {
 function writeCentered(y, text, size=1, width=1, color=VECTOR_COLOR) {
   const textLength = phraseLength(text, size);
   writeText(Game.width/2-textLength/2, y, text, size, width, color);
-}
-
-function addGravity(element, cx, cy, gravity) {
-  // F = Gm1m2/r^2 = gravity/r^2
-  let dx = element.x-cx;
-  let dy = element.y-cy;
-  let F = gravity/Math.pow(Math.hypot(dx, dy), 2);
-  let angle = Math.atan2(dy, dx)
-  let fx = -F*Math.cos(angle);
-  let fy = -F*Math.sin(angle);
-  element.speedX += (fx<MAX_ACCEL?fx:MAX_ACCEL);
-  element.speedY += (fy<MAX_ACCEL?fy:MAX_ACCEL);
 }
 
 function checkNumber(number) {
@@ -235,7 +213,7 @@ class Ship extends BaseSprite {
     if (this.thrusters && !this.dead) {
       let fireLength = Math.random()*FIRE_LENGTH*this.size;
       let fireArray = [this.rear, [this.rear[0]-fireLength*Math.cos(this.rotation), this.rear[1]-fireLength*Math.sin(this.rotation)]];
-      drawArray(fireArray);
+      drawArray(fireArray, 4);
     }
     // draw shots
     this.shots.forEach(shot => shot.draw());
@@ -285,8 +263,8 @@ class Ship extends BaseSprite {
     // fire thrusters
     this.thrusters = true;
     // calculate new velocity vector
-    this.speedX += THRUSTER_SPEED*Math.cos(this.rotation);
-    this.speedY += THRUSTER_SPEED*Math.sin(this.rotation);
+    this.speedX += THRUSTER_ACCELERATION*Math.cos(this.rotation);
+    this.speedY += THRUSTER_ACCELERATION*Math.sin(this.rotation);
     Game.thrusters();
   }
   updateRotation(angle) {

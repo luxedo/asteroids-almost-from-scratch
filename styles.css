@@ -33,7 +33,7 @@ html, body {
   max-width: 80%;
   border-color: #FFF;
   border-style: solid;
-  border-width: 1px;
+  border-width: 2px;
 }
 
 #game-frame {
