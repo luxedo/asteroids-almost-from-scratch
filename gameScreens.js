@@ -47,6 +47,8 @@ playScreen.init = () => {
   Game.asteroids.push(randomAsteroid(MED_ASTEROID, ASTEROID_MAX_SPEED));
   Game.asteroids.push(randomAsteroid(SMA_ASTEROID, ASTEROID_MAX_SPEED));
   Game.saucer = new Ship(...p1Spawn, {}, saucerVectors, 5, Game.laser1);
+  Game.score = new Score(20, 20, 2);
+  Game.score.score = 91324;
   playScreen.ended = false;
 }
 
@@ -56,6 +58,7 @@ playScreen.draw = function () {
   Game.player1.draw();
   Game.asteroids.forEach(value => value.draw());
   Game.saucer.draw();
+  Game.score.draw();
 }
 
 playScreen.update = function () {

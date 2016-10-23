@@ -19,7 +19,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Draw asteroids~~
 * ~~Create `Saucer` class~~
 * ~~Draw saucers~~
-* Create `Score` class
+* ~~Create `Score` class~~
 * Modify collision mechanics
 * Create level mechanics
 * Create life mechanics
@@ -95,3 +95,22 @@ const saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 
                        [[2, 1], [2.5, 2], [3.5, 2], [4, 1]],
                        [[-1, 0], [7, 0]]];
 ```
+
+## 03:20 - Create `Score` class
+The score class is super simple, it took 10 min to make and test it.
+
+![score](report-assets/score.png "score")
+```javascript
+class Score {
+  constructor(x, y, size) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.score = 0;
+  }
+  draw() {
+    writeText(this.x, this.y, this.score.toString(), this.size);
+  }
+}
+```
+I thought about making the score like the original game, but I really liked working with the [Hershey Vector Font](http://paulbourke.net/dataformats/hershey/).

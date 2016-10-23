@@ -439,3 +439,15 @@ class Asteroid extends BaseSprite {
       .map(vector => [vector[0]*this.size+this.x, vector[1]*this.size+this.y])));
   }
 }
+
+class Score {
+  constructor(x, y, size) {
+    this.x = x;
+    this.y = y;
+    this.size = size;
+    this.score = 0;
+  }
+  draw() {
+    writeText(this.x, this.y, this.score.toString(), this.size);
+  }
+}
