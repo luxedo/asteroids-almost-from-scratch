@@ -31,6 +31,10 @@ const BIG_ASTEROID = 12;
 const MED_ASTEROID = 6;
 const SMA_ASTEROID = 3;
 const ASTEROID_MAX_SPEED = 2;
+const saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 0]],
+                       [[2, 1], [2.5, 2], [3.5, 2], [4, 1]],
+                       [[-1, 0], [7, 0]]];
+
 
 playScreen.init = () => {
   // Create players
@@ -42,6 +46,7 @@ playScreen.init = () => {
   Game.asteroids.push(randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED));
   Game.asteroids.push(randomAsteroid(MED_ASTEROID, ASTEROID_MAX_SPEED));
   Game.asteroids.push(randomAsteroid(SMA_ASTEROID, ASTEROID_MAX_SPEED));
+  Game.saucer = new Ship(...p1Spawn, {}, saucerVectors, 5, Game.laser1);
   playScreen.ended = false;
 }
 
@@ -50,11 +55,13 @@ playScreen.draw = function () {
   // draw sprites
   Game.player1.draw();
   Game.asteroids.forEach(value => value.draw());
+  Game.saucer.draw();
 }
 
 playScreen.update = function () {
   Game.player1.update();
   Game.asteroids.forEach(value => value.update());
+  Game.saucer.update();
   // check for collision
   // let collisionArr1 = Game.player1.shots.slice();
   // collisionArr1.push(Game.player1);

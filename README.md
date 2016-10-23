@@ -17,8 +17,8 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Modify `Shot` class~~
 * ~~Create `Asteroid` class~~
 * ~~Draw asteroids~~
-* Create `Saucer` class
-* Draw saucers
+* ~~Create `Saucer` class~~
+* ~~Draw saucers~~
 * Create `Score` class
 * Modify collision mechanics
 * Create level mechanics
@@ -58,6 +58,9 @@ The game does not have the `blackhole` (star) in the middle as `Spacewar` has, s
 ## 01:20 - Modify `Ship` class
 The ship sprite is much simpler in Asteroids. So it was easy to draw: ![ship](report-assets/ship.png "ship")
 ![ship thrusters](report-assets/ship-thrusters.png "ship thrusters"). I changed some properties to make the ship more agile and interesting to play.
+```javascript
+const player1Vectors = [[[5, 0], [-4, -3], [-3, -2], [-3, 2], [-4, 3], [5, 0]]];
+```
 
 ## 01:30 - Modify `Shot` class
 The shots were also easy. I just changed some properties and done.
@@ -82,3 +85,13 @@ Luckly for me, in the constructor, I have made the vectors translate to make the
 This is the end result
 
 ![asteroid class](report-assets/asteroid-class.gif "asteroid class")
+
+## 03:10 - Create `Saucer` class and draw saucers
+Instead of making a `Saucer` class, I'm recycling the `Ship` class and will control it in the gameloop.
+The vectors for the
+![saucer](report-assets/saucer.png "saucer") are:
+```javascript
+const saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 0]],
+                       [[2, 1], [2.5, 2], [3.5, 2], [4, 1]],
+                       [[-1, 0], [7, 0]]];
+```
