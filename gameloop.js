@@ -50,7 +50,6 @@ let enemyScreen = {}
 
 // Game globals
 let winner = "player 1 wins";
-let gameMode = "enemy";
 
 // Sounds assets
 let explosionURL = "assets/334266__projectsu012__short-explosion-1.wav";
@@ -102,7 +101,7 @@ Game.start = function() {
   Game.thrusters = soundFactory(Game.thrustersSound, 100, 350);
 
   // run loop
-  Game.changeState(startScreen)
+  Game.changeState(playScreen)
   Game._onEachFrame(Game.run);
 };
 

@@ -24,7 +24,6 @@ const startScreenPositions = [[190, 310], [190, 360]]
 
 
 creditsScreen.init = () => {
-  creditsScreen.stars = playScreen.makeStars()
 }
 creditsScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
@@ -84,9 +83,7 @@ startScreen.update = () => {
 }
 
 gameOverScreen.init = () => {
-  winner = (Game.player2.dead?"player 1 wins":"player 2 wins")
-  winner = (Game.player2.dead && Game.player1.dead?"draw":winner)
-  gameOverScreen.stars = playScreen.makeStars()
+  winner = "dummy";
   gameOverScreen.arrow = new ShipCursor(gameOverPositions, player1Vectors, 3);
 }
 gameOverScreen.draw = () => {
@@ -94,7 +91,7 @@ gameOverScreen.draw = () => {
 
   gameOverScreen.arrow.draw()
   writeCentered(100, "GAME OVER", 5);
-  if (gameMode === "versus" || winner === "draw") writeCentered(200, winner, 3);
+  if (winner === "draw") writeCentered(200, winner, 3);
   else writeCentered(200, (winner==="player 1 wins"?"you win":"you lose"), 3);
   writeCentered(350, "play again", 2);
   writeCentered(400, "menu", 2);
@@ -107,8 +104,8 @@ gameOverScreen.update = () => {
     Game.keyTimeout = Date.now()+200;
     Game.laser2();
     if (gameOverScreen.arrow.current === 0) {
-      if (gameMode === "versus") Game.changeState(playScreen);
-      else Game.changeState(enemyScreen);
+      // if (gameMode === "versus") Game.changeState(playScreen);
+      // else Game.changeState(enemyScreen);
     }
     else if (gameOverScreen.arrow.current === 1) Game.changeState(startScreen);
   } else if (Key.isDown(27)) {

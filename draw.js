@@ -26,7 +26,6 @@ const SHOT_DISTANCE = 250;
 const SHOT_SPEED = 2;
 const SHOT_SIZE = 5;
 const SHOT_INTERVAL = 300;
-const BLACKHOLE_SIZE = 12;
 const MAX_ACCEL = 1;
 const MAX_SPEED = 1;
 const BLAST_SIZE = 50;
@@ -259,9 +258,6 @@ class Ship extends BaseSprite {
         // rotate vectors around center
         this.updateRotation();
       };
-      // black hole collision
-      let playerToBlackhole = Math.hypot(this.x-playScreen.blackhole.x, this.y-playScreen.blackhole.y)
-      if (playerToBlackhole <= BLACKHOLE_SIZE) this.respawnSprite(0, 0);
     }
     // update shots
     let removeShots = []
@@ -399,24 +395,6 @@ class Shot extends BaseSprite {
     let yr1 = y1*Math.cos(Math.PI/2)+x1*Math.sin(Math.PI/2)+yc;
     drawArray([[xr0, yr0], [xr1, yr1]])
     this.size -= 0.5;
-  }
-}
-
-class Blackhole extends BaseSprite {
-  constructor(x, y) {
-    super(x, y);
-  }
-  draw() {
-    let size = Math.random()*BLACKHOLE_SIZE;
-    let angle = Math.random()*Math.PI*2;
-    let x0 = this.x + Math.cos(angle)*size
-    let y0 = this.y + Math.sin(angle)*size
-    let x1 = this.x - Math.cos(angle)*size
-    let y1 = this.y - Math.sin(angle)*size
-    drawArray([[x0, y0], [x1, y1]])
-  }
-  update() {
-    super.update();
   }
 }
 
