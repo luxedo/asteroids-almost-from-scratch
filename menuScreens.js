@@ -57,7 +57,7 @@ creditsScreen.update = () => {
 }
 
 startScreen.init = () => {
-  startScreen.arrow = new ShipCursor(startScreenPositions, player1Vectors, 3);
+  startScreen.arrow = new ShipCursor(startScreenPositions, playerVectors, 3);
 }
 startScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
@@ -84,7 +84,7 @@ startScreen.update = () => {
 
 gameOverScreen.init = () => {
   winner = "dummy";
-  gameOverScreen.arrow = new ShipCursor(gameOverPositions, player1Vectors, 3);
+  gameOverScreen.arrow = new ShipCursor(gameOverPositions, playerVectors, 3);
 }
 gameOverScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);

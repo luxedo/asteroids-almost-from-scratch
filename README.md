@@ -20,7 +20,15 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Create `Saucer` class~~
 * ~~Draw saucers~~
 * ~~Create `Score` class~~
-* Modify collision mechanics
+* ~~Modify collision mechanics~~
+  * ~~Collision with borders~~
+  * ~~Collision Asteroid-Player~~
+  * ~~Collision Shot-Asteroid~~
+  * ~~Collision Saucer-Shot~~
+  * ~~Collision Saucer Player~~
+  * ~~Collision Saucer Shot-Player Shot~~
+  * ~~Collision Saucer Shot-Player~~
+* Create Asteroid breaking mechanics
 * Create level mechanics
 * Create life mechanics
 * Create High scores screen
@@ -114,3 +122,21 @@ class Score {
 }
 ```
 I thought about making the score like the original game, but I really liked working with the [Hershey Vector Font](http://paulbourke.net/dataformats/hershey/).
+
+## 03:25 - Modify collision mechanics - Collision with borders
+It was changed in the `update` method of `BaseSprite` the way the game computes a collision with the borders.
+```javascript
+// border collision
+if (this.x < 0) this.x = 600;
+if (this.x > 600) this.x = 0;
+if (this.y < 0) this.y = 600;
+if (this.y > 600) this.y = 0;
+```
+## 04:10 - Modify collision mechanics - Collision Asteroid-Player
+Since the collision function was implemented in `Spacewar`, it was easy to calculate the collisions with the asteroids. I just had to add a conditional to make the asteroids split in smaller ones.
+
+## 05:00 - Modify collision mechanics - Collision Asteroid-Shot
+The collision mechanics were easy to implement again, but this part took a while longer because I wasn't using correctly the splice method and along with the non-blocking property of JavaScript I was getting lots of bugs.
+
+## 05:20 - Modify collision mechanics - Collision Saucer
+The last part of the collisions was easier because there were code from Spacewar that did exactly that.

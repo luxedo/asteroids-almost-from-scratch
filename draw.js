@@ -27,7 +27,8 @@ const SHOT_DISTANCE = 500;
 const SHOT_SPEED = 5;
 const SHOT_SIZE = 1;
 const SHOT_INTERVAL = 200;
-const BLAST_SIZE = 50;
+const BLAST_SIZE = 20;
+const ASTEROID_BREAK_SIZE = 5;
 const VECTOR_COLOR = "#FFF"
 
 function drawArray(array, width=2, color=VECTOR_COLOR) {
@@ -121,36 +122,57 @@ function makeAsteroidVectors() {
   return [vectors];
 }
 
-function randomAsteroid(size, maxSpeed) {
+function randomAsteroid(size, maxSpeed, x, y) {
   let quadrant = Math.floor(Math.random()*4-0.00001);
-  let x = (quadrant==0?0:(quadrant==2?Game.width:Math.random()*Game.width));
-  let y = (quadrant==1?0:(quadrant==3?Game.width:Math.random()*Game.width));
+  if (x === undefined) {
+    x = (quadrant==0?0:(quadrant==2?Game.width:Math.random()*Game.width));
+  }
+  if (y === undefined) {
+    y = (quadrant==1?0:(quadrant==3?Game.width:Math.random()*Game.width));
+  }
   let rotationSpeed = Math.random()*Math.PI/45-Math.PI/90;
   let speedX = Math.random()*maxSpeed - maxSpeed/2;
   let speedY = Math.random()*maxSpeed - maxSpeed/2;
   return new Asteroid(x, y, makeAsteroidVectors(), size, rotationSpeed, speedX, speedY)
 }
 
+
 class BaseSprite {
-  constructor(x, y) {
+  constructor(x, y, shape, size) {
     this.x = x;
     this.y = y;
+    this.shape = shape.map(value0 => value0.map(value1 => [value1[0]*size, value1[1]*size]));
+    this.size = size;
     this.speedX = 0;
     this.speedY = 0;
+
+    // find centroid
+    let flat = [].concat.apply([], this.shape);
+    this.left = Math.min(...flat.map(value => value[0]))
+    this.right = Math.max(...flat.map(value => value[0]))
+    this.top = Math.min(...flat.map(value => value[1]))
+    this.bottom = Math.max(...flat.map(value => value[1]))
+    this.center = [(this.left+this.right)/2, (this.top+this.bottom)/2];
+
+    // translate center
+    this.showShape = this.shape
+      .map(value0 => value0
+        .map(value1 => [value1[0]-this.center[0], value1[1]-this.center[1]]
+    ));
   }
-  draw() {}
+  draw() {
+    this.showShape.forEach(value => drawArray(value
+      .map(vector => [vector[0]+this.x, vector[1]+this.y])));
+  }
   update() {
     this.x += this.speedX;
     this.y += this.speedY;
 
     // border collision
-    let spriteToBorder = Game.radius - Math.hypot(this.x-Game.width/2, this.y-Game.height/2)
-    if (spriteToBorder <= 0) {
-      let angle = Math.atan2(this.y-Game.height/2, this.x-Game.width/2)+Math.PI;
-      let x = (Game.radius-10)*Math.cos(angle)+Game.width/2;
-      let y = (Game.radius-10)*Math.sin(angle)+Game.height/2;
-      this.resetSprite(x, y);
-    }
+    if (this.x < 0) this.x = 600;
+    if (this.x > 600) this.x = 0;
+    if (this.y < 0) this.y = 600;
+    if (this.y > 600) this.y = 0;
   }
   get rear() {
     let retval = this.rotateVector([this.left*this.size+this.center[0], (this.top+this.bottom)/2+this.center[1]*this.size]);
@@ -204,39 +226,22 @@ class BaseSprite {
 
 class Ship extends BaseSprite {
   constructor(x, y, keys, shape, size, sound) {
-    super(x, y);
+    super(x, y, shape, size);
     this.keyUp = keys.keyUp;
     this.keyDown = keys.keyDown;
     this.keyLeft = keys.keyLeft;
     this.keyRight = keys.keyRight;
-    this.shape = shape;
-    this.size = size;
     this.rotation = 0;
     this.speedX = 0;
     this.speedY = 0;
     this.shots = [];
     this.shotTimeout = Date.now();
     this.sound = sound;
-
-    // find centroid
-    let flat = [].concat.apply([], this.shape);
-    this.left = Math.min(...flat.map(value => value[0]))
-    this.right = Math.max(...flat.map(value => value[0]))
-    this.top = Math.min(...flat.map(value => value[1]))
-    this.bottom = Math.max(...flat.map(value => value[1]))
-    this.center = [(this.left+this.right)/2, (this.top+this.bottom)/2];
-
-    // translate center
-    this.showShape = this.shape
-      .map(value0 => value0
-        .map(value1 => [value1[0]-this.center[0], value1[1]-this.center[1]]
-    ));
   }
 
   draw() {
     // draw ship
-    this.showShape.forEach(value => drawArray(value
-      .map(vector => [vector[0]*this.size+this.x, vector[1]*this.size+this.y])));
+    super.draw()
     // draw thrusters fire
     if (this.thrusters && !this.dead) {
       let fireLength = Math.random()*THRUSTERS_LENGTH*this.size;
@@ -261,7 +266,6 @@ class Ship extends BaseSprite {
         // rotate ship
         this.rotation += (Key.isDown(this.keyRight)?ROTATION_SPEED:-ROTATION_SPEED)
         this.rotation %= 2*Math.PI;
-        // rotate vectors around center
         this.updateRotation();
       };
     }
@@ -326,13 +330,13 @@ class Ship extends BaseSprite {
 
 class Shot extends BaseSprite {
   constructor(x, y, direction, sound) {
-    super(x, y);
+    super(x, y, [[[0, 0], [1, 0]]], SHOT_SIZE);
+    this.size = SHOT_SIZE;
     this.direction = direction;
     this.rotation = direction;
     this.center = [0, 0];
     this.speedX = Math.cos(direction)*SHOT_SPEED;
     this.speedY = Math.sin(direction)*SHOT_SPEED;
-    this.size = SHOT_SIZE;
     sound();
     this.distance = 0;
   }
@@ -346,7 +350,7 @@ class Shot extends BaseSprite {
     return retval;
   }
   draw() {
-    drawArray([[this.x, this.y], [this.xf, this.yf]]);
+    super.draw()
     if (SHOT_DISTANCE-this.distance<=20) {
       this._explode()
     }
@@ -358,6 +362,7 @@ class Shot extends BaseSprite {
     this.distance += SHOT_SPEED;
   }
   explode() {
+    this.dead = true;
     this.distance = SHOT_DISTANCE - 10;
   }
   _explode() {
@@ -407,36 +412,46 @@ class ShipCursor extends Ship {
 
 class Asteroid extends BaseSprite {
   constructor(x, y, shape, size, rotationSpeed, speedX, speedY) {
-    super(x, y);
-    this.shape = shape;
-    this.size = size;
+    super(x, y, shape, size);
     this.rotationSpeed = rotationSpeed;
     this.speedX = speedX;
     this.speedY = speedY;
     this.rotation = Math.random()*Math.PI/90
-
-    // find centroid
-    let flat = [].concat.apply([], this.shape);
-    this.left = Math.min(...flat.map(value => value[0]))
-    this.right = Math.max(...flat.map(value => value[0]))
-    this.top = Math.min(...flat.map(value => value[1]))
-    this.bottom = Math.max(...flat.map(value => value[1]))
-    this.center = [(this.left+this.right)/2, (this.top+this.bottom)/2];
-
-    // translate center
-    this.showShape = this.shape
-      .map(value0 => value0
-        .map(value1 => [value1[0]-this.center[0], value1[1]-this.center[1]]
-    ));
   }
   update() {
     super.update();
-    this.updateRotation(this.rotation+this.rotationSpeed);
+    if (!this.dead) this.updateRotation(this.rotation+this.rotationSpeed);
+
   }
-  draw() {
-    // draw ship
-    this.showShape.forEach(value => drawArray(value
-      .map(vector => [vector[0]*this.size+this.x, vector[1]*this.size+this.y])));
+  explode() {
+    if (this.dead) return;
+    this.dead = true;
+    let spriteRadius = Math.max(...[this.top, this.bottom, this.left, this.right].map((val) => Math.abs(val)))
+    let blast0 = this.fillExplosion(spriteRadius/2, ASTEROID_BREAK_SIZE);
+    let blast1 = this.fillExplosion(spriteRadius, ASTEROID_BREAK_SIZE);
+    let blast2 = this.fillExplosion(spriteRadius*2, ASTEROID_BREAK_SIZE);
+    let blast3 = this.fillExplosion(spriteRadius/2, ASTEROID_BREAK_SIZE);
+    let empty = []
+    Game.explosion()
+    this.rotationSpeed = 0;
+    this.showShape = blast0;
+    setTimeout(()=> this.showShape = blast1, 100);
+    setTimeout(()=> this.showShape = blast2, 200);
+    setTimeout(()=> this.showShape = blast3, 300);
+    setTimeout(()=> {
+      this.showShape = empty
+      this.done = true;
+    }, 400);
+  }
+  fillExplosion(radius, debris) {
+    let array = []
+    while (array.length < debris) {
+      let theta = Math.random()*2*Math.PI;
+      let r = Math.random()*radius;
+      let [x, y] = [r*Math.cos(theta), r*Math.sin(theta)]
+      array.push([[x, y], [x+1, y+1]])
+    }
+    return array;
   }
 }
 

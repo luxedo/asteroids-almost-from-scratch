@@ -20,8 +20,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use strict";
 
 const p1Spawn = [150, 150];
-const player1Vectors = [[[5, 0], [-4, -3], [-3, -2], [-3, 2], [-4, 3], [5, 0]]];
-const player1Keys = {
+const playerVectors = [[[5, 0], [-4, -3], [-3, -2], [-3, 2], [-4, 3], [5, 0]]];
+const playerKeys = {
   keyUp: 32,
   keyDown: 38,
   keyLeft: 37,
@@ -38,7 +38,7 @@ const saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 
 
 playScreen.init = () => {
   // Create players
-  Game.player1 = new Ship(...p1Spawn, player1Keys, player1Vectors, 1.5, Game.laser1);
+  Game.player = new Ship(...p1Spawn, playerKeys, playerVectors, 1.5, Game.laser1);
   Game.asteroids = []
   Game.asteroids.push(randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED));
   Game.asteroids.push(randomAsteroid(MED_ASTEROID, ASTEROID_MAX_SPEED));
@@ -46,7 +46,7 @@ playScreen.init = () => {
   Game.asteroids.push(randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED));
   Game.asteroids.push(randomAsteroid(MED_ASTEROID, ASTEROID_MAX_SPEED));
   Game.asteroids.push(randomAsteroid(SMA_ASTEROID, ASTEROID_MAX_SPEED));
-  Game.saucer = new Ship(...p1Spawn, {}, saucerVectors, 5, Game.laser1);
+  Game.saucer = new Ship(300, 150, {}, saucerVectors, 5, Game.laser1);
   Game.score = new Score(20, 20, 2);
   Game.score.score = 91324;
   playScreen.ended = false;
@@ -55,30 +55,68 @@ playScreen.init = () => {
 playScreen.draw = function () {
   Game.context.clearRect(0, 0, Game.width, Game.height);
   // draw sprites
-  Game.player1.draw();
+  Game.player.draw();
   Game.asteroids.forEach(value => value.draw());
   Game.saucer.draw();
   Game.score.draw();
 }
 
 playScreen.update = function () {
-  Game.player1.update();
+  // update sprites
+  Game.player.update();
   Game.asteroids.forEach(value => value.update());
   Game.saucer.update();
+
   // check for collision
-  // let collisionArr1 = Game.player1.shots.slice();
-  // collisionArr1.push(Game.player1);
-  // for (let i=0; i<collisionArr1.length; i++) {
-  //   for (let j=0; j<collisionArr2.length; j++) {
-  //     let sprite1 = collisionArr1[i];
-  //     let sprite2 = collisionArr2[j];
-  //     if (playScreen.checkCollision(sprite1, sprite2)) {
-  //       sprite1.explode();
-  //       sprite2.explode();
-  //     }
-  //   }
-  // }
-  if ((Game.player1.dead) && !playScreen.ended) {
+  Game.asteroids.forEach((asteroid) => {
+    // Shot-Asteroid collision
+    Game.player.shots.forEach(shot => {
+      if (playScreen.checkCollision(asteroid, shot)) {
+        asteroid.explode();
+        shot.explode();
+      }
+    });
+    // Asteroid-Player collision
+    if (playScreen.checkCollision(Game.player, asteroid)) {
+      if (asteroid.dead) return;
+      Game.player.explode();
+      asteroid.explode();
+    }
+    // destroy asteroids
+    if (asteroid.dead && !asteroid.splitted) {
+      asteroid.splitted = true;
+      if (asteroid.size == BIG_ASTEROID) {
+        Game.asteroids.push(randomAsteroid(MED_ASTEROID, ASTEROID_MAX_SPEED, asteroid.x, asteroid.y))
+        Game.asteroids.push(randomAsteroid(MED_ASTEROID, ASTEROID_MAX_SPEED, asteroid.x, asteroid.y))
+      }
+      else if (asteroid.size == MED_ASTEROID) {
+        Game.asteroids.push(randomAsteroid(SMA_ASTEROID, ASTEROID_MAX_SPEED, asteroid.x, asteroid.y))
+        Game.asteroids.push(randomAsteroid(SMA_ASTEROID, ASTEROID_MAX_SPEED, asteroid.x, asteroid.y))
+      }
+    }
+  });
+  // Player, Shot and Saucer collision
+  let collisionArr1 = Game.player.shots.slice();
+  collisionArr1.push(Game.player);
+  let collisionArr2 = Game.saucer.shots.slice();
+  collisionArr2.push(Game.saucer);
+  for (let i=0; i<collisionArr1.length; i++) {
+    for (let j=0; j<collisionArr2.length; j++) {
+      let sprite1 = collisionArr1[i];
+      let sprite2 = collisionArr2[j];
+      if (playScreen.checkCollision(sprite1, sprite2) && !sprite1.dead && !sprite2.dead) {
+        sprite1.explode();
+        sprite2.explode();
+      }
+    }
+  }
+  // clear dead asteroids
+  let removeAsteroids = [];
+  Game.asteroids.forEach((asteroid, index) => {
+    if (asteroid.done) removeAsteroids.push(index);
+  });
+  removeAsteroids.forEach(value => Game.asteroids.splice(value, 1))
+  if ((Game.player.dead) && !playScreen.ended) {
     playScreen.ended = true;
     setTimeout(() => Game.changeState(gameOverScreen), 1000);
   }
