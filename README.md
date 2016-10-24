@@ -36,7 +36,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
   * ~~Modify `start screen`~~
   * ~~Modify `credits screen`~~
   * ~~Modify `game over screen`~~
-* Create High scores screen
+* ~~Create High scores screen~~
 * Find someplace to host High scores
 * Modify sounds
 * Improve webpage
@@ -163,7 +163,13 @@ The saucer AI was also salvaged from `spacewar`, the main change is that the sau
 ![saucer ai](report-assets/saucer-ai.gif "saucer ai")
 
 ## 08:00 Modify menu screens
-
 All the screens were partially done, so it was just a matter of changing the text and the position of some stuff. I added a few asteroids in the screens to make them look more interesting.
 
 ![new screens](report-assets/new-screens.gif "new screens")
+
+## 08:40 Create high score screen
+I copied the `credits screen` and modified it to make the `high score screen`. At this point I didn't worry about how I'm connecting the high scores with some server.
+Also, I added a space for the player to put his/hers name in the `game over screen`.
+
+![high score screen](report-assets/high-score-screen.png "high score screen")
+![game over name](report-assets/gameover-name.png "game over name")

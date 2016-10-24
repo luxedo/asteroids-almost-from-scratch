@@ -22,7 +22,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // keyboard handler
 let Key = {
   _pressed: {},
-  _single: {},
   isDown: function(keyCode) {return this._pressed[keyCode]},
   onKeydown: function(event) {this._pressed[event.keyCode] = true},
   onKeyup: function(event) {delete this._pressed[event.keyCode]},
@@ -48,7 +47,7 @@ let playScreen = {}
 let gameOverScreen = {}
 let startScreen = {}
 let creditsScreen = {}
-let enemyScreen = {}
+let highScoreScreen = {}
 
 // Sounds assets
 let explosionURL = "assets/334266__projectsu012__short-explosion-1.wav";
@@ -101,8 +100,9 @@ Game.start = function() {
 
   // run loop
   Game.changeState(startScreen)
-  // Game.changeState(playScreen)
-  // Game.changeState(gameOverScreen)
+  Game.changeState(playScreen)
+  Game.changeState(gameOverScreen)
+  Game.changeState(highScoreScreen)
   Game._onEachFrame(Game.run);
 };
 

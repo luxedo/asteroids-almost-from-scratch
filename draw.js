@@ -415,12 +415,12 @@ class ShipCursor extends Ship {
   }
   update() {
     if (Date.now()>this.timeout) {
-      if (Key.isDown(38) || Key.isDown(87)) {
+      if (Key.isDown(38)) {
         Game.thrusters();
         this.current-=1;
         this.timeout = Date.now()+200;
       };
-      if (Key.isDown(40) || Key.isDown(83)) {
+      if (Key.isDown(40)) {
         Game.thrusters();
         this.current+=1;
         this.timeout = Date.now()+200;

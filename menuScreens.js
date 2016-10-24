@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 "use strict";
 
-const gameOverPositions = [[180, 410], [230, 460]]
+const gameOverPositions = [[180, 460], [230, 510]]
 const startScreenPositions = [[210, 310], [210, 360]]
 
 creditsScreen.init = () => {
@@ -89,24 +89,38 @@ startScreen.update = () => {
 gameOverScreen.init = () => {
   gameOverScreen.arrow = new ShipCursor(gameOverPositions, playerVectors, 3);
   gameOverScreen.asteroids = makeAsteroids(3, 2, 2);
+  gameOverScreen.cursor = 0;
+  gameOverScreen.name = "";
 }
 gameOverScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
   startScreen.asteroids.forEach(asteroid => asteroid.draw());
   gameOverScreen.arrow.draw()
-  writeCentered(100, "GAME OVER", 5);
-  writeCentered(200, 'HIGH SCORE', 3);
-  writeCentered(250, Game.score.score.toString(), 5);
-  writeCentered(400, "play again", 2);
-  writeCentered(450, "menu", 2);
+  writeCentered(80, "GAME OVER", 5);
+  writeCentered(150, 'HIGH SCORE', 3);
+  writeCentered(200, Game.score.score.toString(), 5);
+  writeCentered(300, gameOverScreen.name, 5);
+  writeCentered(350, "-".repeat(gameOverScreen.name===""?4:gameOverScreen.name.length*4), 1);
+  writeCentered(380, "Enter your initials", 1.5);
+  writeCentered(450, "play again", 2);
+  writeCentered(500, "menu", 2);
   writeCentered(570, VERSION);
 }
 gameOverScreen.update = () => {
   gameOverScreen.arrow.update()
   startScreen.asteroids.forEach(asteroid => asteroid.update());
+  if (Game.keyTimeout > Date.now()) return
+  Game.keyTimeout = Date.now()+150;
+  for (let i=48; i<=90; i++) {
+    if (Key.isDown(i) && gameOverScreen.name.length<=5) {
+      console.log(gameOverScreen.name);
+      gameOverScreen.name += String.fromCharCode(i);
+    }
+  }
+  if (Key.isDown(8)) {
+    gameOverScreen.name = gameOverScreen.name.substring(0, gameOverScreen.name.length - 1);
+  }
   if (Key.isDown(13)) {
-    if (Game.keyTimeout > Date.now()) return
-    Game.keyTimeout = Date.now()+200;
     Game.laser2();
     if (gameOverScreen.arrow.current === 0) {
       Game.changeState(playScreen);
@@ -115,5 +129,35 @@ gameOverScreen.update = () => {
   } else if (Key.isDown(27)) {
     Game.laser1();
     Game.changeState(playScreen);
+  }
+}
+
+highScoreScreen.init = () => {
+  highScoreScreen.asteroids = makeAsteroids(3, 0, 1);
+}
+highScoreScreen.draw = () => {
+  Game.context.clearRect(0, 0, Game.width, Game.height);
+  highScoreScreen.asteroids.forEach(asteroid => asteroid.draw());
+  // draw board
+  // add text
+  writeCentered(50, "asteroids", 4);
+  writeCentered(100, "almost from scratch", 2);
+  writeCentered(150, "high scores", 2);
+  writeText(100, 200, "BOB: ", 4, 3);
+  writeText(300, 200, "8217", 4, 3);
+  writeText(100, 250, "Mark:", 3);
+  writeText(300, 250, "526", 3);
+  writeText(100, 290, "Vegeta:", 2);
+  writeText(300, 290, "153", 2);
+  writeText(100, 320, "gfhf:", 2);
+  writeText(300, 320, "20", 2);
+  writeCentered(550, "esc - go back");
+  writeCentered(570, VERSION);
+}
+highScoreScreen.update = () => {
+  highScoreScreen.asteroids.forEach(asteroid => asteroid.update());
+  if (Key.isDown(27)) {
+    Game.laser1();
+    Game.changeState(startScreen);
   }
 }
