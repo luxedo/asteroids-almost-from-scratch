@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 "use strict";
 
-const ROTATION_SPEED = 6*Math.PI/180;
+const ROTATION_SPEED = 4*Math.PI/180;
 const THRUSTERS_ACCELERATION = 0.05;
 const MAX_SPEED = 2;
 const THRUSTERS_LENGTH = 5;
@@ -145,6 +145,7 @@ class BaseSprite {
     this.size = size;
     this.speedX = 0;
     this.speedY = 0;
+    this.hidden = false;
 
     // find centroid
     let flat = [].concat.apply([], this.shape);
@@ -161,8 +162,10 @@ class BaseSprite {
     ));
   }
   draw() {
-    this.showShape.forEach(value => drawArray(value
-      .map(vector => [vector[0]+this.x, vector[1]+this.y])));
+    if (!this.hidden) {
+      this.showShape.forEach(value => drawArray(value
+        .map(vector => [vector[0]+this.x, vector[1]+this.y])));
+    }
   }
   update() {
     this.x += this.speedX;
@@ -314,7 +317,10 @@ class Ship extends BaseSprite {
     setTimeout(()=> this.showShape = blast1, 60);
     setTimeout(()=> this.showShape = blast2, 120);
     setTimeout(()=> this.showShape = blast3, 180);
-    setTimeout(()=> this.showShape = empty, 240);
+    setTimeout(()=> {
+      this.showShape = empty
+      this.hidden = true;
+    }, 240);
   }
   fillExplosion(radius, debris) {
     let array = []

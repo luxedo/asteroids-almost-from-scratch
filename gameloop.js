@@ -50,6 +50,7 @@ let enemyScreen = {}
 
 // Game globals
 let winner = "player 1 wins";
+let level = 1;
 
 // Sounds assets
 let explosionURL = "assets/334266__projectsu012__short-explosion-1.wav";

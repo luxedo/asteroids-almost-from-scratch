@@ -1,5 +1,5 @@
 # ASTEROIDS ALMOST FROM SCRATCH
-This is an attempt of reproducing the game [asteroids](https://en.wikipedia.org/wiki/asteroids!) using modern programming languages. The idea is to track the progress and time each stage of development in this document. If possible, I want to finish this project in under 24h.
+This is an attempt of reproducing the game [asteroids](https://en.wikipedia.org/wiki/asteroids!) using modern programming languages. The idea is to track the progress and time each stage of development in this document. If possible, I want to finish this project in under 24h. Feel free to see the `diff` between the commits and maybe learn something just like I did. 
 
 #### Check it out [here](https://armlessjohn404.github.io/asteroids-almost-from-scratch/)
 
@@ -22,15 +22,16 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Create `Score` class~~
 * ~~Modify collision mechanics~~
   * ~~Collision with borders~~
+  * ~~Create Asteroid breaking mechanics~~
   * ~~Collision Asteroid-Player~~
   * ~~Collision Shot-Asteroid~~
   * ~~Collision Saucer-Shot~~
   * ~~Collision Saucer Player~~
   * ~~Collision Saucer Shot-Player Shot~~
   * ~~Collision Saucer Shot-Player~~
-* Create Asteroid breaking mechanics
-* Create level mechanics
+* ~~Create level mechanics~~
 * Create life mechanics
+* Implement saucer AI
 * Create High scores screen
 * Find someplace to host High scores
 * Modify `start screen`
@@ -140,3 +141,12 @@ The collision mechanics were easy to implement again, but this part took a while
 
 ## 05:20 - Modify collision mechanics - Collision Saucer
 The last part of the collisions was easier because there were code from Spacewar that did exactly that.
+
+## 06:00 - Create level mechanics
+The game is played in waves of increasing difficulty, so, when the count of asteroids is zero, a new level starts with more asteroids. The saucers appears randomly with increasing probability (1/level) over time.
+Also, the score system was upgraded:
+* Asteroids - 20 (large), 50 (medium), or 100 points (small).
+* Saucers - 200 (large), or 1000 points (small).
+
+## 06:00 Pause!
+Right now, October 24rd, 2016 at 00:45 (BRT), I'm giving a break from the project. Maybe I can finish it in under 12h, that would be neat!
