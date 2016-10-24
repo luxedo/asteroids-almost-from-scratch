@@ -38,7 +38,9 @@ let Game = {
   fps: 60,
   width: 600,
   height: 600,
-  radius: 300
+  radius: 300,
+  level: 1,
+  life: 3
 };
 
 // Screens objects
@@ -47,10 +49,6 @@ let gameOverScreen = {}
 let startScreen = {}
 let creditsScreen = {}
 let enemyScreen = {}
-
-// Game globals
-let winner = "player 1 wins";
-let level = 1;
 
 // Sounds assets
 let explosionURL = "assets/334266__projectsu012__short-explosion-1.wav";
@@ -102,7 +100,9 @@ Game.start = function() {
   Game.thrusters = soundFactory(Game.thrustersSound, 100, 350);
 
   // run loop
-  Game.changeState(playScreen)
+  Game.changeState(startScreen)
+  // Game.changeState(playScreen)
+  // Game.changeState(gameOverScreen)
   Game._onEachFrame(Game.run);
 };
 

@@ -88,7 +88,7 @@ function phraseLength(phrase, size) {
   return lastPosition*size;
 }
 
-function writeText(x, y, text, size=1, width=1, color=VECTOR_COLOR) {
+function writeText(x, y, text, size=1, width=2, color=VECTOR_COLOR) {
   let lastPosition = 0;
   text.split("").forEach((letter) => {
       let [coordinates, finalPosition] = parseLetter(letter.toUpperCase());
@@ -100,7 +100,7 @@ function writeText(x, y, text, size=1, width=1, color=VECTOR_COLOR) {
   });
 }
 
-function writeCentered(y, text, size=1, width=1, color=VECTOR_COLOR) {
+function writeCentered(y, text, size=1, width=2, color=VECTOR_COLOR) {
   const textLength = phraseLength(text, size);
   writeText(Game.width/2-textLength/2, y, text, size, width, color);
 }
@@ -134,6 +134,14 @@ function randomAsteroid(size, maxSpeed, x, y) {
   let speedX = Math.random()*maxSpeed - maxSpeed/2;
   let speedY = Math.random()*maxSpeed - maxSpeed/2;
   return new Asteroid(x, y, makeAsteroidVectors(), size, rotationSpeed, speedX, speedY)
+}
+
+function makeAsteroids(big, med, sma) {
+  let asteroids = [];
+  for (let i=0; i<big; i++) asteroids.push(randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED))
+  for (let i=0; i<med; i++) asteroids.push(randomAsteroid(MED_ASTEROID, ASTEROID_MAX_SPEED))
+  for (let i=0; i<sma; i++) asteroids.push(randomAsteroid(SMA_ASTEROID, ASTEROID_MAX_SPEED))
+  return asteroids
 }
 
 
@@ -178,13 +186,13 @@ class BaseSprite {
     if (this.y > 600) this.y = 0;
   }
   get rear() {
-    let retval = this.rotateVector([this.left*this.size+this.center[0], (this.top+this.bottom)/2+this.center[1]*this.size]);
+    let retval = this.rotateVector([this.left+this.center[0], (this.top+this.bottom)/2+this.center[1]]);
     retval = [retval[0]+this.x, retval[1]+this.y]
     return retval;
   }
 
   get tip() {
-    let retval = this.rotateVector([this.right*this.size+this.center[0], (this.top+this.bottom)/2+this.center[1]*this.size]);
+    let retval = this.rotateVector([this.right+this.center[0], (this.top+this.bottom)/2+this.center[1]]);
     retval = [retval[0]+this.x, retval[1]+this.y]
     return retval;
   }
@@ -240,6 +248,13 @@ class Ship extends BaseSprite {
     this.shots = [];
     this.shotTimeout = Date.now();
     this.sound = sound;
+    this.thrustersLength = THRUSTERS_LENGTH;
+    this.rotationSpeed = ROTATION_SPEED;
+    this.maxSpeed = MAX_SPEED;
+    this.shotInterval = SHOT_INTERVAL;
+    this.thrustersAcceleration = THRUSTERS_ACCELERATION;
+    this.blastSize = BLAST_SIZE;
+    this.shotDistance = SHOT_DISTANCE;
   }
 
   draw() {
@@ -247,7 +262,7 @@ class Ship extends BaseSprite {
     super.draw()
     // draw thrusters fire
     if (this.thrusters && !this.dead) {
-      let fireLength = Math.random()*THRUSTERS_LENGTH*this.size;
+      let fireLength = Math.random()*this.thrustersLength*this.size;
       let fireArray = [this.rear, [this.rear[0]-fireLength*Math.cos(this.rotation), this.rear[1]-fireLength*Math.sin(this.rotation)]];
       drawArray(fireArray, 4);
     }
@@ -267,7 +282,7 @@ class Ship extends BaseSprite {
       };
       if (Key.isDown(this.keyLeft) || Key.isDown(this.keyRight)) {
         // rotate ship
-        this.rotation += (Key.isDown(this.keyRight)?ROTATION_SPEED:-ROTATION_SPEED)
+        this.rotation += (Key.isDown(this.keyRight)?this.rotationSpeed:-this.rotationSpeed)
         this.rotation %= 2*Math.PI;
         this.updateRotation();
       };
@@ -275,31 +290,31 @@ class Ship extends BaseSprite {
     // update shots
     let removeShots = []
     this.shots.forEach((shot, index) => {
-      if (shot.distance > SHOT_DISTANCE) removeShots.push(shot);
+      if (shot.distance > this.shotDistance) removeShots.push(shot);
       shot.update()
     });
     removeShots.forEach(val => this.shots.splice(val, 1));
 
     // limit max speed
     const speed = Math.hypot(this.speedX, this.speedY)
-    if (speed > MAX_SPEED) {
-      this.speedX *= MAX_SPEED/speed;
-      this.speedY *= MAX_SPEED/speed;
+    if (speed > this.maxSpeed) {
+      this.speedX *= this.maxSpeed/speed;
+      this.speedY *= this.maxSpeed/speed;
     }
   }
   fire() {
     let now = Date.now();
     if (now >= this.shotTimeout) {
-      this.shotTimeout = now+SHOT_INTERVAL;
-      this.shots.push(new Shot(...this.tip, this.rotation, this.sound));
+      this.shotTimeout = now+this.shotInterval;
+      this.shots.push(new Shot(...this.tip, this.rotation, this.sound, this.shotDistance));
     }
   }
   fireThrusters() {
     // fire thrusters
     this.thrusters = true;
     // calculate new velocity vector
-    this.speedX += THRUSTERS_ACCELERATION*Math.cos(this.rotation);
-    this.speedY += THRUSTERS_ACCELERATION*Math.sin(this.rotation);
+    this.speedX += this.thrustersAcceleration*Math.cos(this.rotation);
+    this.speedY += this.thrustersAcceleration*Math.sin(this.rotation);
     Game.thrusters();
   }
 
@@ -307,10 +322,10 @@ class Ship extends BaseSprite {
     if (this.dead) return;
     this.dead = true;
     let spriteRadius = Math.max(...[this.top, this.bottom, this.left, this.right].map((val) => Math.abs(val)))
-    let blast0 = this.fillExplosion(spriteRadius, BLAST_SIZE);
-    let blast1 = this.fillExplosion(spriteRadius*2, BLAST_SIZE);
-    let blast2 = this.fillExplosion(spriteRadius*5, BLAST_SIZE);
-    let blast3 = this.fillExplosion(spriteRadius, BLAST_SIZE);
+    let blast0 = this.fillExplosion(spriteRadius, this.blastSize);
+    let blast1 = this.fillExplosion(spriteRadius*2, this.blastSize);
+    let blast2 = this.fillExplosion(spriteRadius*5, this.blastSize);
+    let blast3 = this.fillExplosion(spriteRadius, this.blastSize);
     let empty = []
     Game.explosion()
     this.showShape = blast0;
@@ -335,7 +350,7 @@ class Ship extends BaseSprite {
 }
 
 class Shot extends BaseSprite {
-  constructor(x, y, direction, sound) {
+  constructor(x, y, direction, sound, shotDistance) {
     super(x, y, [[[0, 0], [1, 0]]], SHOT_SIZE);
     this.size = SHOT_SIZE;
     this.direction = direction;
@@ -345,6 +360,7 @@ class Shot extends BaseSprite {
     this.speedY = Math.sin(direction)*SHOT_SPEED;
     sound();
     this.distance = 0;
+    this.shotDistance = shotDistance;
   }
   get corners() {
     let lt = this.rotateVector([-1, 3]);
@@ -357,7 +373,7 @@ class Shot extends BaseSprite {
   }
   draw() {
     super.draw()
-    if (SHOT_DISTANCE-this.distance<=20) {
+    if (this.shotDistance-this.distance<=20) {
       this._explode()
     }
   }
@@ -369,7 +385,7 @@ class Shot extends BaseSprite {
   }
   explode() {
     this.dead = true;
-    this.distance = SHOT_DISTANCE - 10;
+    this.distance = this.shotDistance - 10;
   }
   _explode() {
     // center of rotation

@@ -1,5 +1,5 @@
 # ASTEROIDS ALMOST FROM SCRATCH
-This is an attempt of reproducing the game [asteroids](https://en.wikipedia.org/wiki/asteroids!) using modern programming languages. The idea is to track the progress and time each stage of development in this document. If possible, I want to finish this project in under 24h. Feel free to see the `diff` between the commits and maybe learn something just like I did. 
+This is an attempt of reproducing the game [asteroids](https://en.wikipedia.org/wiki/asteroids!) using modern programming languages. The idea is to track the progress and time each stage of development in this document. If possible, I want to finish this project in under 24h. Feel free to see the `diff` between the commits and maybe learn something just like I did.
 
 #### Check it out [here](https://armlessjohn404.github.io/asteroids-almost-from-scratch/)
 
@@ -30,13 +30,14 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
   * ~~Collision Saucer Shot-Player Shot~~
   * ~~Collision Saucer Shot-Player~~
 * ~~Create level mechanics~~
-* Create life mechanics
-* Implement saucer AI
+* ~~Create life mechanics~~
+* ~~Implement saucer AI~~
+* ~~Modify menu screens~~
+  * ~~Modify `start screen`~~
+  * ~~Modify `credits screen`~~
+  * ~~Modify `game over screen`~~
 * Create High scores screen
 * Find someplace to host High scores
-* Modify `start screen`
-* Modify `credits screen`
-* Modify `game over screen`
 * Modify sounds
 * Improve webpage
 * Get play testers feedback
@@ -149,4 +150,20 @@ Also, the score system was upgraded:
 * Saucers - 200 (large), or 1000 points (small).
 
 ## 06:00 Pause!
-Right now, October 24rd, 2016 at 00:45 (BRT), I'm giving a break from the project. Maybe I can finish it in under 12h, that would be neat!
+Right now, October 24rd, 2016 at 00:45 (BRT), I'm giving a break from the project. About 2/3 of the goas are done, maybe I can finish it in under 12h, that would be neat!
+
+## 06:45 Create life mechanics
+The life mechanics could have been a class, but I opted for implementing all in the gameloop. I used the `ShipCursor` class and an array to draw ships bellow the score that indicates the life of the player. Now the game is playable and looks like this:
+
+![game so far](report-assets/game-so-far.gif "game so far")
+
+## 07:30 Implement saucer AI
+The saucer AI was also salvaged from `spacewar`, the main change is that the saucer is much slower and the shots interval is much higher.
+
+![saucer ai](report-assets/saucer-ai.gif "saucer ai")
+
+## 08:00 Modify menu screens
+
+All the screens were partially done, so it was just a matter of changing the text and the position of some stuff. I added a few asteroids in the screens to make them look more interesting.
+
+![new screens](report-assets/new-screens.gif "new screens")
