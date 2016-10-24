@@ -1,0 +1,31 @@
+{
+  "name": "spacewar-almost-from-scratch",
+  "version": "0.1.0",
+  "description": "This is an attempt of reproducing the game asteroids using modern programming languages.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
+  },
+  "engines": {
+    "node": "4.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArmlessJohn404/asteroids-almost-from-scratch.git"
+  },
+  "keywords": [
+    "node",
+    "heroku",
+    "express"
+  ],
+  "author": "Luiz Eduardo Nishino Gomes do Amaral",
+  "contributors": [],
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/ArmlessJohn404/asteroids-almost-from-scratch/issues"
+  },
+  "homepage": "https://github.com/ArmlessJohn404/asteroids-almost-from-scratch#readme"
+}
