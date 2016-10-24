@@ -37,7 +37,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
   * ~~Modify `credits screen`~~
   * ~~Modify `game over screen`~~
 * ~~Create High scores screen~~
-* Find someplace to host High scores
+* ~~Find someplace to host High scores~~
 * Modify sounds
 * Improve webpage
 * Get play testers feedback
@@ -173,3 +173,5 @@ Also, I added a space for the player to put his/hers name in the `game over scre
 
 ![high score screen](report-assets/high-score-screen.png "high score screen")
 ![game over name](report-assets/gameover-name.png "game over name")
+
+## 08:40 Find someplace to host High scores

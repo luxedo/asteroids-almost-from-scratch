@@ -134,6 +134,18 @@ gameOverScreen.update = () => {
 
 highScoreScreen.init = () => {
   highScoreScreen.asteroids = makeAsteroids(3, 0, 1);
+  let settings = {
+    url: "http://api.orchestrate.io/v0/high-scores?pretty=true&sort=value.score:dsc",
+    headers: {"Authorization": "Basic OTM3OGE0ZjUtYmM2Ny00MTU0LWJlZTMtZGQ3OTNhYjk3MDlhOg=="},
+    // I know, please pretend you didn't saw the lines above
+    success: data => {
+      console.log(data)
+    },
+    error: data => {
+      console.log(data)
+    }
+  }
+  $.ajax(settings);
 }
 highScoreScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);

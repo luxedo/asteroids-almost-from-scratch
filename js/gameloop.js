@@ -99,9 +99,9 @@ Game.start = function() {
   Game.thrusters = soundFactory(Game.thrustersSound, 100, 350);
 
   // run loop
-  Game.changeState(startScreen)
-  Game.changeState(playScreen)
-  Game.changeState(gameOverScreen)
+  // Game.changeState(startScreen)
+  // Game.changeState(playScreen)
+  // Game.changeState(gameOverScreen)
   Game.changeState(highScoreScreen)
   Game._onEachFrame(Game.run);
 };
