@@ -1,7 +1,7 @@
 # ASTEROIDS ALMOST FROM SCRATCH
 This is an attempt of reproducing the game [asteroids](https://en.wikipedia.org/wiki/asteroids!) using modern programming languages. The idea is to track the progress and time each stage of development in this document. If possible, I want to finish this project in under 24h. Feel free to see the `diff` between the commits and maybe learn something just like I did.
 
-#### Check it out [here](https://armlessjohn404.github.io/asteroids-almost-from-scratch/)
+#### Check it out [here](https://asteroids-almost-from-scratch.herokuapp.com/)
 
 The game is based in `html5 canvas`, `CSS` and `ES6 javascript`. No extra libraries or engines will be used.
 

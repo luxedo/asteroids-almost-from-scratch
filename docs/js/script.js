@@ -22,4 +22,26 @@ const VERSION = "v1.0-beta";
 
 function startGame() {
   Game.start();
+  if ('withCredentials' in new XMLHttpRequest() || typeof XDomainRequest !== "undefined" ) {
+      /* supports cross-domain requests */
+      //Use IE-specific "CORS" code with XDR
+
+  } else if (true) {
+    //Time to retreat with a fallback or polyfill
+    $(".footer p:first").hide();
+    $(".footer p:first").before(`
+      <p>
+        <h3>
+          This host does not support high-scores. Try:<br>
+          <a href="https://asteroids-almost-from-scratch.herokuapp.com/">
+          asteroids-almost-from-scratch.herokuapp.com/</a>
+        </h3>
+      </p>`
+    );
+  }
 }
+
+(function checkCors() {
+  console.log('hgiii');
+
+})();

@@ -37,7 +37,7 @@ html, body {
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 177px;
+  height: 200px;
 }
 a:link, a:visited, a:hover, a:active {
   color: #FFF;
@@ -55,7 +55,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #game-frame {
-  padding-bottom: 177px;
+  padding-bottom: 200px;
 }
 
 /*highscores*/
@@ -78,7 +78,7 @@ table tr:nth-child(even) {
 
 table {
   width: 50%;
-  padding-bottom: 177px;
+  padding-bottom: 100px;
 }
 
 .highscore-body {

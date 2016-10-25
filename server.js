@@ -31,7 +31,6 @@ function getHighScores(req, res) {
 
 function postHighScores(req, res, next) {
   const player = req.body
-  console.log(req.body);
   pg.connect(process.env.DATABASE_URL, (err, client, done) => {
     if (err) {
       return next(err)
