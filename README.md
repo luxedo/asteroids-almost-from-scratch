@@ -37,7 +37,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
   * ~~Modify `credits screen`~~
   * ~~Modify `game over screen`~~
 * ~~Create High scores screen~~
-* ~~Find someplace to host High scores~~
+* ~~Find someplace to host high scores~~
 * ~~Implement pause~~
 * Modify sounds
 * Improve webpage
@@ -175,4 +175,30 @@ Also, I added a space for the player to put his/hers name in the `game over scre
 ![high score screen](report-assets/high-score-screen.png "high score screen")
 ![game over name](report-assets/gameover-name.png "game over name")
 
-## 08:40 Find someplace to host High scores
+## 14:00 Find someplace to host high scores
+It took 5 hours to convert the project to be hosted at [Heroku](https://www.heroku.com/
+), learn a bit of [Postgres](https://www.postgresql.org/) and learn how [Heroku Postgres](https://www.heroku.com/postgres) works. Phew, it took a while longer than I expected, but it's working!
+
+I started by setting up a server with [node](https://nodejs.org/en/) and [express](http://expressjs.com/) and created some routes. I'm using [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) to GET and POST
+the high scores. I didn't put the effort to make an authentication, so my API is completly exposed.
+
+```javascript
+let express = require('express')
+let bodyParser = require('body-parser')
+let app = express()
+let pg = require('pg');
+
+app.use(bodyParser());
+app.set('port', (process.env.PORT || 5000));
+app.use(express.static(__dirname + '/docs'));
+app.get('/highscores', getHighScores);
+app.post('/sendscore', postHighScores); // shhhh, pretend you didn't see this
+app.get('*', (req, res) => res.redirect('/'));
+```
+
+When calling the high scores screen, I place the results of a query inside the screen
+object which is rendered on screen.
+
+```javascript
+$.get("/highscores", data => highScoreScreen.scores = data);
+```

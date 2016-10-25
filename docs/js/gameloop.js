@@ -100,9 +100,9 @@ Game.start = function() {
 
   // run loop
   Game.changeState(startScreen);
-  Game.changeState(playScreen);
-  Game.changeState(gameOverScreen);
-  // Game.changeState(highScoreScreen)
+  // Game.changeState(playScreen);
+  // Game.changeState(gameOverScreen);
+  // Game.changeState(highScoreScreen);
   Game._onEachFrame(Game.run);
 };
 

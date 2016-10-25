@@ -1,13 +1,13 @@
-var express = require('express')
-var bodyParser = require('body-parser')
-var app = express()
-var pg = require('pg');
+let express = require('express')
+let bodyParser = require('body-parser')
+let app = express()
+let pg = require('pg');
 
 app.use(bodyParser());
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/docs'));
 app.get('/highscores', getHighScores);
-app.post('/sendscore', postHighScores); // please don't hack the scores
+app.post('/sendscore', postHighScores); // shhhh, pretend you didn't see this
 app.get('*', (req, res) => res.redirect('/'));
 
 function getHighScores(req, res) {

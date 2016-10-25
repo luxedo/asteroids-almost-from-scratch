@@ -20,7 +20,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use strict";
 
 const gameOverPositions = [[170, 420], [180, 470], [230, 520]]
-const startScreenPositions = [[210, 310], [210, 360]]
+const startScreenPositions = [[230, 310], [170, 360], [210, 410]]
 
 creditsScreen.init = () => {
   creditsScreen.asteroids = makeAsteroids(3, 0, 1);
@@ -69,7 +69,8 @@ startScreen.draw = () => {
   writeCentered(80, "asteroids", 5, 5);
   writeCentered(150, "almost from scratch", 2.7);
   writeCentered(300, "start", 2);
-  writeCentered(350, "credits", 2);
+  writeCentered(350, "high scores", 2);
+  writeCentered(400, "credits", 2);
   writeCentered(500, "enter - go        esc - go back", 1);
   writeCentered(520, "controls - arrows and spacebar", 1);
   writeCentered(560, VERSION);
@@ -82,7 +83,8 @@ startScreen.update = () => {
     Game.keyTimeout = Date.now()+200;
     Game.laser2();
     if (startScreen.arrow.current === 0) Game.changeState(playScreen);
-    else if (startScreen.arrow.current === 1) Game.changeState(creditsScreen);
+    else if (startScreen.arrow.current === 1) Game.changeState(highScoreScreen);
+    else if (startScreen.arrow.current === 2) Game.changeState(creditsScreen);
   }
 }
 
@@ -102,8 +104,8 @@ gameOverScreen.draw = () => {
   writeCentered(280, gameOverScreen.name, 5);
   writeCentered(330, "-".repeat(gameOverScreen.name===""?4:gameOverScreen.name.length*4), 1);
   writeCentered(360, "Enter your initials", 1.5);
-  writeCentered(410, "play again", 2);
-  writeCentered(460, "Save score", 2);
+  writeCentered(410, "Save score", 2);
+  writeCentered(460, "play again", 2);
   writeCentered(510, "menu", 2);
   writeCentered(570, VERSION);
 }
@@ -122,9 +124,8 @@ gameOverScreen.update = () => {
   }
   if (Key.isDown(13)) {
     Game.laser2();
-    if (gameOverScreen.arrow.current === 0) {
-      Game.changeState(playScreen);
-    } else if (gameOverScreen.arrow.current === 1) gameOverScreen.postScore();
+    if (gameOverScreen.arrow.current === 0) gameOverScreen.postScore();
+    else if (gameOverScreen.arrow.current === 1) Game.changeState(playScreen);
     else if (gameOverScreen.arrow.current === 2) Game.changeState(startScreen);
   } else if (Key.isDown(27)) {
     Game.laser1();
@@ -132,9 +133,9 @@ gameOverScreen.update = () => {
   }
 }
 gameOverScreen.postScore = () => {
+  // shhhh, pretend you didn't see this
   $.post("/sendscore", {"name": gameOverScreen.name, "score": parseInt(Game.score.score)})
     .done(() => Game.changeState(highScoreScreen));
-
 }
 
 highScoreScreen.init = () => {
