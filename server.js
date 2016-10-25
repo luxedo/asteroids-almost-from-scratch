@@ -15,7 +15,7 @@ app.get('/db', function (request, response) {
       else
        {
          console.log('inside query');
-         response.render('pages/db', {results: result.rows} );
+         console.log(result);
        }
        console.log('heloo!');
 
@@ -23,8 +23,9 @@ app.get('/db', function (request, response) {
   });
 });
 
-app.set('port', (process.env.PORT || 5000))
-app.use(express.static(__dirname + '/docs'))
+app.set('port', (process.env.PORT || 5000));
+app.use(express.static(__dirname + '/docs'));
+// app.get('/db', function (request, response) {
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
