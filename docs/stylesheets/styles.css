@@ -17,6 +17,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
+/*main*/
 html, body {
   background-color: #000;
   color: #FFF;
@@ -26,7 +28,23 @@ html, body {
   padding:0;
   height:100%;
 }
+.container {
+  min-height: 100%;
+  position: inline;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 177px;
+}
+a:link, a:visited, a:hover, a:active {
+  color: #FFF;
+  text-decoration: underline;
+}
 
+/*game*/
 #game {
   margin-top: 10%;
   max-height: 80%;
@@ -37,23 +55,32 @@ html, body {
 }
 
 #game-frame {
-    padding-bottom: 150px;
+  padding-bottom: 177px;
 }
 
-.container {
-  min-height: 100%;
-  position: relative;
+/*highscores*/
+h1 {
+  font-size: 6em;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 150px;
+h2 {
+  font-size: 3em;
 }
 
-a:link, a:visited, a:hover, a:active {
-  color: #FFF;
-  text-decoration: underline;
+table tr td {
+  font-size: 2em;
+}
+
+table tr:nth-child(even) {
+  background-color: #FFF;
+  color: #000;
+}
+
+table {
+  width: 50%;
+  padding-bottom: 177px;
+}
+
+.highscore-body {
+  height: 90%;
 }

@@ -40,7 +40,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Find someplace to host high scores~~
 * ~~Implement pause~~
 * ~~Modify sounds~~
-* Improve webpage
+* ~~Improve webpage~~
 * Get play testers feedback
 * List requests/bugs
 * Fix requests/bugs
@@ -150,20 +150,20 @@ Also, the score system was upgraded:
 * Asteroids - 20 (large), 50 (medium), or 100 points (small).
 * Saucers - 200 (large), or 1000 points (small).
 
-## 06:00 Pause!
+## 06:00 - Pause!
 Right now, October 24rd, 2016 at 00:45 (BRT), I'm giving a break from the project. About 2/3 of the goas are done, maybe I can finish it in under 12h, that would be neat!
 
-## 06:45 Create life mechanics
+## 06:45 - Create life mechanics
 The life mechanics could have been a class, but I opted for implementing all in the gameloop. I used the `ShipCursor` class and an array to draw ships bellow the score that indicates the life of the player. Now the game is playable and looks like this:
 
 ![game so far](report-assets/game-so-far.gif "game so far")
 
-## 07:30 Implement saucer AI
+## 07:30 - Implement saucer AI
 The saucer AI was also salvaged from `spacewar`, the main change is that the saucer is much slower and the shots interval is much higher.
 
 ![saucer ai](report-assets/saucer-ai.gif "saucer ai")
 
-## 08:00 Modify menu screens
+## 08:00 - Modify menu screens
 All the screens were partially done, so it was just a matter of changing the text and the position of some stuff. I added a few asteroids in the screens to make them look more interesting.
 
 ![new screens](report-assets/new-screens.gif "new screens")
@@ -175,7 +175,7 @@ Also, I added a space for the player to put his/hers name in the `game over scre
 ![high score screen](report-assets/high-score-screen.png "high score screen")
 ![game over name](report-assets/gameover-name.png "game over name")
 
-## 14:00 Find someplace to host high scores
+## 14:00 - Find someplace to host high scores
 It took 5 hours to convert the project to be hosted at [Heroku](https://www.heroku.com/
 ), learn a bit of [Postgres](https://www.postgresql.org/) and learn how [Heroku Postgres](https://www.heroku.com/postgres) works. Phew, it took a while longer than I expected, but it's working!
 
@@ -205,9 +205,14 @@ to the game engine.
 $.get("/highscores", data => highScoreScreen.scores = data);
 ```
 
-## 14:40 Modify Sounds
+## 14:40 - Modify Sounds
 Luckly for me, it was easy to find the sound assets. I downloaded all the sounds from
 [http://www.classicgaming.cc/classics/asteroids/sounds](http://www.classicgaming.cc/classics/asteroids/sounds). Thanks guys! I just changed the names of the assets and done.
 
 In html5 it's a bit hard to work with sounds, they sound choppy sometimes and the same
 sound asset doesn't like to be called while it's playing.
+
+## 15:40 - Improve webpage
+For the webpage, I added a static page to get a list of the high scores.
+
+![highscores](report-assets/highscores.png "highscores")

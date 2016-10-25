@@ -1,9 +1,10 @@
-let express = require('express')
-let bodyParser = require('body-parser')
-let app = express()
+"use strict";
+let express = require('express');
+let bodyParser = require('body-parser');
+let app = express();
 let pg = require('pg');
 
-app.use(bodyParser());
+app.use(bodyParser.json());
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/docs'));
 app.get('/highscores', getHighScores);

@@ -26,36 +26,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <link id="favicon" rel="icon" href="assets/favicon.ico" type="image/x-icon">
     <meta charset="utf-8">
     <link rel="stylesheet" href="stylesheets/styles.css">
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/gameloop.js"></script>
-    <script src="js/draw.js"></script>
-    <script src="js/hershey.js"></script>
-    <script src="js/gameScreens.js"></script>
-    <script src="js/menuScreens.js"></script>
-    <!-- twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@ArmlessJohn404" />
-    <meta name="twitter:creator" content="@ArmlessJohn404" />
-    <meta name="twitter:title" content="ASTEROIDS ALMOST FROM SCRATCH">
-    <meta name="twitter:description" content="This is an attempt of reproducing the game asteroids using modern programming languages.">
-    <meta name="twitter:image" content="https://github.com/ArmlessJohn404/asteroids-almost-from-scratch/raw/master/docs/assets/opengraph.png">
-    <!-- opengraph -->
-    <meta property="og:title" content="ASTEROIDS ALMOST FROM SCRATCH" />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://armlessjohn404.github.io/asteroids-almost-from-scratch/" />
-    <meta property="og:image" content="https://github.com/ArmlessJohn404/asteroids-almost-from-scratch/raw/master/assets/docs/opengraph.png" />
-    <meta property="og:description" content="This is an attempt of reproducing the game asteroids using modern programming languages." />
   </head>
 
-  <body onload="startGame()">
+  <body class="highscore-body">
     <div class="container">
-      <div id="game-frame">
-      </div>
-      <div class="footer">
+      <h1>Asteroids almost from scratch</h1>
+      <br>
+      <h2>High Scores</h2>
+      <table id="high-scores-table" align="center" cellspacing="0" cellpadding="0">
+      </table>
+      <br>
+      <div class="highscore-footer">
         <p>
-          <a href="highscores.html">High Scores</a>
+          <a href="/">Go to game!</a>
         </p>
         <p>
           <a href="https://github.com/ArmlessJohn404/asteroids-almost-from-scratch">
@@ -76,4 +60,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       </div>
     </div>
   </body>
+  <script>
+    $.get("/highscores", data => {
+      data.forEach((value, index) => {
+        let element = `<tr><td>${index+1}</td><td>${value.name}</td><td>${value.score}</td></tr>`
+        $('#high-scores-table').append(element);
+      });
+    });
+  </script>
 </html>
