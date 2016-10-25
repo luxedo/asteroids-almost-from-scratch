@@ -145,7 +145,7 @@ highScoreScreen.init = () => {
       console.log(data)
     }
   }
-  $.ajax(settings);
+  // $.ajax(settings);
 }
 highScoreScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);

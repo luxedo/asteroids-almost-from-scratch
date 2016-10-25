@@ -38,6 +38,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
   * ~~Modify `game over screen`~~
 * ~~Create High scores screen~~
 * ~~Find someplace to host High scores~~
+* ~~Implement pause~~
 * Modify sounds
 * Improve webpage
 * Get play testers feedback

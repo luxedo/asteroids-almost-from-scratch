@@ -69,9 +69,19 @@ playScreen.draw = function () {
   if (!Game.saucer.hidden) Game.saucer.draw();
   Game.score.draw();
   Game.lifeIndicator.forEach(value => value.draw());
+  if (!document.hasFocus()) {
+    writeCentered(Game.height/2, "PAUSED", 4)
+  }
 }
 
 playScreen.update = function () {
+  if (Key.isDown(27)) {
+    // Game.blip4();
+    Game.changeState(startScreen);
+  }
+  if (!document.hasFocus()) {
+    return
+  }
   // update sprites
   Game.player.update();
   Game.asteroids.forEach(value => value.update());
@@ -186,12 +196,6 @@ playScreen.update = function () {
       Game.saucer.fire();
     }
     Game.saucer.fireThrusters()
-  }
-
-  // check for esc keypress
-  if (Key.isDown(27)) {
-    // Game.blip4();
-    Game.changeState(startScreen);
   }
 }
 

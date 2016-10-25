@@ -1,5 +1,25 @@
 var express = require('express')
 var app = express()
+var pg = require('pg');
+
+console.log(process.env.DATABASE_URL);
+app.get('/db', function (request, response) {
+  pg.connect(process.env.DATABASE_URL, function(err, client, done) {
+    console.log(err);
+    client.query('SELECT * FROM scores', function(err, result) {
+      done();
+      if (err)
+       { console.error(err); response.send("Error " + err); }
+      else
+       {
+         console.log('inside query');
+         response.render('pages/db', {results: result.rows} );
+       }
+       console.log('heloo!');
+
+    });
+  });
+});
 
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/docs'))
