@@ -2,6 +2,7 @@ var express = require('express')
 var app = express()
 var pg = require('pg');
 
+app.set('view engine', 'html');
 console.log('Hello!!!');
 console.log(process.env.DATABASE_URL);
 app.get('/db', function (request, response) {
