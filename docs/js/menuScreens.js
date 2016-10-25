@@ -19,7 +19,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 "use strict";
 
-const gameOverPositions = [[180, 460], [230, 510]]
+const gameOverPositions = [[170, 420], [180, 470], [230, 520]]
 const startScreenPositions = [[210, 310], [210, 360]]
 
 creditsScreen.init = () => {
@@ -88,32 +88,32 @@ startScreen.update = () => {
 
 gameOverScreen.init = () => {
   gameOverScreen.arrow = new ShipCursor(gameOverPositions, playerVectors, 3);
-  gameOverScreen.asteroids = makeAsteroids(3, 2, 2);
+  gameOverScreen.asteroids = makeAsteroids(2, 2, 2);
   gameOverScreen.cursor = 0;
   gameOverScreen.name = "";
 }
 gameOverScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
-  startScreen.asteroids.forEach(asteroid => asteroid.draw());
+  gameOverScreen.asteroids.forEach(asteroid => asteroid.draw());
   gameOverScreen.arrow.draw()
-  writeCentered(80, "GAME OVER", 5);
-  writeCentered(150, 'HIGH SCORE', 3);
-  writeCentered(200, Game.score.score.toString(), 5);
-  writeCentered(300, gameOverScreen.name, 5);
-  writeCentered(350, "-".repeat(gameOverScreen.name===""?4:gameOverScreen.name.length*4), 1);
-  writeCentered(380, "Enter your initials", 1.5);
-  writeCentered(450, "play again", 2);
-  writeCentered(500, "menu", 2);
+  writeCentered(60, "GAME OVER", 5);
+  writeCentered(120, 'HIGH SCORE', 3);
+  writeCentered(180, Game.score.score.toString(), 5);
+  writeCentered(280, gameOverScreen.name, 5);
+  writeCentered(330, "-".repeat(gameOverScreen.name===""?4:gameOverScreen.name.length*4), 1);
+  writeCentered(360, "Enter your initials", 1.5);
+  writeCentered(410, "play again", 2);
+  writeCentered(460, "Save score", 2);
+  writeCentered(510, "menu", 2);
   writeCentered(570, VERSION);
 }
 gameOverScreen.update = () => {
   gameOverScreen.arrow.update()
-  startScreen.asteroids.forEach(asteroid => asteroid.update());
+  gameOverScreen.asteroids.forEach(asteroid => asteroid.update());
   if (Game.keyTimeout > Date.now()) return
   Game.keyTimeout = Date.now()+150;
   for (let i=48; i<=90; i++) {
     if (Key.isDown(i) && gameOverScreen.name.length<=5) {
-      console.log(gameOverScreen.name);
       gameOverScreen.name += String.fromCharCode(i);
     }
   }
@@ -124,45 +124,36 @@ gameOverScreen.update = () => {
     Game.laser2();
     if (gameOverScreen.arrow.current === 0) {
       Game.changeState(playScreen);
-    }
-    else if (gameOverScreen.arrow.current === 1) Game.changeState(startScreen);
+    } else if (gameOverScreen.arrow.current === 1) gameOverScreen.postScore();
+    else if (gameOverScreen.arrow.current === 2) Game.changeState(startScreen);
   } else if (Key.isDown(27)) {
     Game.laser1();
     Game.changeState(playScreen);
   }
 }
+gameOverScreen.postScore = () => {
+  $.post("/sendscore", {"name": gameOverScreen.name, "score": parseInt(Game.score.score)})
+    .done(() => Game.changeState(highScoreScreen));
+
+}
 
 highScoreScreen.init = () => {
   highScoreScreen.asteroids = makeAsteroids(3, 0, 1);
-  let settings = {
-    url: "http://api.orchestrate.io/v0/high-scores?pretty=true&sort=value.score:dsc",
-    headers: {"Authorization": "Basic OTM3OGE0ZjUtYmM2Ny00MTU0LWJlZTMtZGQ3OTNhYjk3MDlhOg=="},
-    // I know, please pretend you didn't saw the lines above
-    success: data => {
-      console.log(data)
-    },
-    error: data => {
-      console.log(data)
-    }
-  }
-  // $.ajax(settings);
+  highScoreScreen.scores = [];
+  $.get("/highscores", data => highScoreScreen.scores = data);
 }
 highScoreScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
   highScoreScreen.asteroids.forEach(asteroid => asteroid.draw());
-  // draw board
-  // add text
   writeCentered(50, "asteroids", 4);
   writeCentered(100, "almost from scratch", 2);
   writeCentered(150, "high scores", 2);
-  writeText(100, 200, "BOB: ", 4, 3);
-  writeText(300, 200, "8217", 4, 3);
-  writeText(100, 250, "Mark:", 3);
-  writeText(300, 250, "526", 3);
-  writeText(100, 290, "Vegeta:", 2);
-  writeText(300, 290, "153", 2);
-  writeText(100, 320, "gfhf:", 2);
-  writeText(300, 320, "20", 2);
+  for (let i=0; i<8; i++) {
+    if (highScoreScreen.scores[i] === undefined) break;
+    let value = highScoreScreen.scores[i]
+    writeText(180, 200+40*i, value.name+":", 2, 2);
+    writeText(320, 200+40*i, value.score.toString(), 2, 2);
+  }
   writeCentered(550, "esc - go back");
   writeCentered(570, VERSION);
 }

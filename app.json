@@ -1,7 +1,7 @@
 {
-  "name": "Node.js Sample",
-  "description": "A barebones Node.js app using Express 4",
-  "repository": "https://github.com/heroku/node-js-sample",
-  "logo": "http://node-js-sample.herokuapp.com/node.svg",
-  "keywords": ["node", "express", "static"]
+  "name": "asteroids-almost-from-scratch",
+  "description": "This is an attempt of reproducing the game asteroids using modern programming languages.",
+  "repository": "git+https://github.com/ArmlessJohn404/asteroids-almost-from-scratch.git",
+  "logo": "docs/images/assets/",
+  "keywords": ["asteroids", "game", "vintage"]
 }
