@@ -50,20 +50,28 @@ let creditsScreen = {}
 let highScoreScreen = {}
 
 // Sounds assets
-let explosionURL = "assets/334266__projectsu012__short-explosion-1.wav";
-let laser1URL  = "assets/344511__jeremysykes__laser03.wav";
-let laser2URL  = "assets/268168__shaun105__laser.wav";
-let thrustersURL  = "assets/238283__meroleroman7__8-bit-noise.wav";
+let extraShipURL = "assets/extraShip.wav";
+let saucerSmallURL = "assets/saucerSmall.wav";
+let saucerBigURL = "assets/saucerSmall.wav";
+let thrustURL  = "assets/thrust.wav";
+let fireURL  = "assets/fire.wav";
+let bangSmallURL  = "assets/bangSmall.wav";
+let bangMediumURL  = "assets/bangMedium.wav";
+let bangLargeURL  = "assets/bangLarge.wav";
+let beat1URL  = "assets/beat1.wav";
+let beat2URL  = "assets/beat2.wav";
 
 // sound factory
-function soundFactory(audio, start, stop) {
+function soundFactory(audio, overide, start, stop) {
   return () => {
     if (audio.paused) {
+      audio.currentTime = start || 0;
       audio.play();
-      setTimeout(()=>{
-        audio.pause();
-        audio.currentTime = start;
-      }, stop);
+      if (stop) setTimeout(() => audio.pause(), stop)
+    } else if (overide) {
+      audio.pause();
+      audio.currentTime = start || 0;
+      audio.play();
     }
   }
 }
@@ -89,14 +97,29 @@ Game.start = function() {
   document.getElementById("game-frame").appendChild(Game.canvas); // Add canvas to game-frame
 
   // Sounds
-  Game.explosionSound = new Audio(explosionURL);
-  Game.laser1Sound = new Audio(laser1URL);
-  Game.laser2Sound = new Audio(laser2URL);
-  Game.thrustersSound = new Audio(thrustersURL);
-  Game.explosion = soundFactory(Game.explosionSound, 0, 300);
-  Game.laser1 = soundFactory(Game.laser1Sound, 0, 300);
-  Game.laser2 = soundFactory(Game.laser2Sound, 0, 300);
-  Game.thrusters = soundFactory(Game.thrustersSound, 100, 350);
+  Game.extraShipSound = new Audio(extraShipURL);
+  Game.saucerSmallSound = new Audio(saucerSmallURL);
+  Game.saucerBigSound = new Audio(saucerBigURL);
+  Game.thrustSound = new Audio(thrustURL);
+  Game.firePlayerSound = new Audio(fireURL);
+  Game.fireSaucerSound = new Audio(fireURL);
+  Game.bangSmallSound = new Audio(bangSmallURL);
+  Game.bangMediumSound = new Audio(bangMediumURL);
+  Game.bangLargeSound = new Audio(bangLargeURL);
+  Game.beat1Sound = new Audio(beat1URL);
+  Game.beat2Sound = new Audio(beat2URL);
+
+  Game.extraShip = soundFactory(Game.extraShipSound);
+  Game.saucerSmall = soundFactory(Game.saucerSmallSound, false, 0, 120);
+  Game.saucerBig = soundFactory(Game.saucerBigSound, false, 0, 120);
+  Game.thrust = soundFactory(Game.thrustSound);
+  Game.firePlayer = soundFactory(Game.firePlayerSound, true);
+  Game.fireSaucer = soundFactory(Game.fireSaucerSound);
+  Game.bangSmall = soundFactory(Game.bangSmallSound);
+  Game.bangMedium = soundFactory(Game.bangMediumSound);
+  Game.bangLarge = soundFactory(Game.bangLargeSound);
+  Game.beat1 = soundFactory(Game.beat1Sound);
+  Game.beat2 = soundFactory(Game.beat2Sound);
 
   // run loop
   Game.changeState(startScreen);
@@ -118,10 +141,8 @@ Game.run = (function() {
       maxFrameSkip = 10,
       nextGameTick = (new Date).getTime(),
       lastGameTick;
-
   return () => {
     loops = 0;
-
     while ((new Date).getTime() > nextGameTick) {
       Game.update();
       nextGameTick += skipTicks;

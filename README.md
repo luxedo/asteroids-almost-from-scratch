@@ -39,7 +39,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Create High scores screen~~
 * ~~Find someplace to host high scores~~
 * ~~Implement pause~~
-* Modify sounds
+* ~~Modify sounds~~
 * Improve webpage
 * Get play testers feedback
 * List requests/bugs
@@ -197,8 +197,17 @@ app.get('*', (req, res) => res.redirect('/'));
 ```
 
 When calling the high scores screen, I place the results of a query inside the screen
-object which is rendered on screen.
+object which is rendered on screen. I used [jQuery](https://jquery.com/) for the requests,
+I allowed myself to use an external library in this case because this is not related
+to the game engine.
 
 ```javascript
 $.get("/highscores", data => highScoreScreen.scores = data);
 ```
+
+## 14:40 Modify Sounds
+Luckly for me, it was easy to find the sound assets. I downloaded all the sounds from
+[http://www.classicgaming.cc/classics/asteroids/sounds](http://www.classicgaming.cc/classics/asteroids/sounds). Thanks guys! I just changed the names of the assets and done.
+
+In html5 it's a bit hard to work with sounds, they sound choppy sometimes and the same
+sound asset doesn't like to be called while it's playing.

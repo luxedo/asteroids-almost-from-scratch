@@ -36,7 +36,7 @@ creditsScreen.draw = () => {
   writeText(50, 220, "modern programming languages. You can find more", 1);
   writeText(50, 240, "information about the project in it's github page:", 1);
   writeCentered(280, "https://github.com/ArmlessJohn404/asteroids-almost-from-scratch", 0.8);
-  // writeText(50, 320, "Thanks to meroleroman7, Shaun105, jeremysykes and", 1);
+  writeText(50, 320, "Thanks to http://www.classicgaming.cc/ for the sounds", 1);
   // writeText(50, 340, "ProjectsU012 for the sound assets.", 1);
   // writeText(50, 360, "Thanks to the playtesters 00jknight, Baino, Maria and", 1);
   // writeText(50, 380, "Thiago Harry", 1);
@@ -53,7 +53,7 @@ creditsScreen.draw = () => {
 creditsScreen.update = () => {
   creditsScreen.asteroids.forEach(asteroid => asteroid.update());
   if (Key.isDown(27)) {
-    Game.laser1();
+      Game.beat1();
     Game.changeState(startScreen);
   }
 }
@@ -81,7 +81,7 @@ startScreen.update = () => {
   if (Key.isDown(13)) {
     if (Game.keyTimeout > Date.now()) return;
     Game.keyTimeout = Date.now()+200;
-    Game.laser2();
+    Game.beat2();
     if (startScreen.arrow.current === 0) Game.changeState(playScreen);
     else if (startScreen.arrow.current === 1) Game.changeState(highScoreScreen);
     else if (startScreen.arrow.current === 2) Game.changeState(creditsScreen);
@@ -123,12 +123,12 @@ gameOverScreen.update = () => {
     gameOverScreen.name = gameOverScreen.name.substring(0, gameOverScreen.name.length - 1);
   }
   if (Key.isDown(13)) {
-    Game.laser2();
+    Game.beat2();
     if (gameOverScreen.arrow.current === 0) gameOverScreen.postScore();
     else if (gameOverScreen.arrow.current === 1) Game.changeState(playScreen);
     else if (gameOverScreen.arrow.current === 2) Game.changeState(startScreen);
   } else if (Key.isDown(27)) {
-    Game.laser1();
+    Game.beat1();
     Game.changeState(playScreen);
   }
 }
@@ -161,7 +161,7 @@ highScoreScreen.draw = () => {
 highScoreScreen.update = () => {
   highScoreScreen.asteroids.forEach(asteroid => asteroid.update());
   if (Key.isDown(27)) {
-    Game.laser1();
+    Game.beat1();
     Game.changeState(startScreen);
   }
 }

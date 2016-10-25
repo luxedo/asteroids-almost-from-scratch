@@ -248,6 +248,7 @@ class Ship extends BaseSprite {
     this.shots = [];
     this.shotTimeout = Date.now();
     this.sound = sound;
+    this.thrustSound = Game.thrust;
     this.thrustersLength = THRUSTERS_LENGTH;
     this.rotationSpeed = ROTATION_SPEED;
     this.maxSpeed = MAX_SPEED;
@@ -315,7 +316,7 @@ class Ship extends BaseSprite {
     // calculate new velocity vector
     this.speedX += this.thrustersAcceleration*Math.cos(this.rotation);
     this.speedY += this.thrustersAcceleration*Math.sin(this.rotation);
-    Game.thrusters();
+    this.thrustSound()
   }
 
   explode() {
@@ -326,8 +327,10 @@ class Ship extends BaseSprite {
     let blast1 = this.fillExplosion(spriteRadius*2, this.blastSize);
     let blast2 = this.fillExplosion(spriteRadius*5, this.blastSize);
     let blast3 = this.fillExplosion(spriteRadius, this.blastSize);
-    let empty = []
-    Game.explosion()
+    let empty = [];
+    Game.bangSmall();
+    Game.bangMedium();
+    Game.bangLarge();
     this.showShape = blast0;
     setTimeout(()=> this.showShape = blast1, 60);
     setTimeout(()=> this.showShape = blast2, 120);
@@ -416,12 +419,12 @@ class ShipCursor extends Ship {
   update() {
     if (Date.now()>this.timeout) {
       if (Key.isDown(38)) {
-        Game.thrusters();
+        Game.beat1();
         this.current-=1;
         this.timeout = Date.now()+200;
       };
       if (Key.isDown(40)) {
-        Game.thrusters();
+        Game.beat2();
         this.current+=1;
         this.timeout = Date.now()+200;
       };
@@ -453,8 +456,10 @@ class Asteroid extends BaseSprite {
     let blast1 = this.fillExplosion(spriteRadius, ASTEROID_BREAK_SIZE);
     let blast2 = this.fillExplosion(spriteRadius*2, ASTEROID_BREAK_SIZE);
     let blast3 = this.fillExplosion(spriteRadius/2, ASTEROID_BREAK_SIZE);
-    let empty = []
-    Game.explosion()
+    let empty = [];
+    if (this.size === BIG_ASTEROID) Game.bangLarge();
+    else if (this.size === MED_ASTEROID) Game.bangMedium();
+    else Game.bangSmall();
     this.rotationSpeed = 0;
     this.showShape = blast0;
     setTimeout(()=> this.showShape = blast1, 100);

@@ -33,32 +33,36 @@ const BIG_ASTEROID = 12;
 const MED_ASTEROID = 6;
 const SMA_ASTEROID = 3;
 const ASTEROID_MAX_SPEED = 3;
-const SAUCER_SCHEDULE = 10000;
+const SAUCER_SCHEDULE = 8000;
 const saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 0]],
                        [[2, 1], [2.5, 2], [3.5, 2], [4, 1]],
                        [[-1, 0], [7, 0]]];
 const LEVEL_BASE = 3;
 const NEW_LIFE_SCORE = 10000;
-let newLifeAt = NEW_LIFE_SCORE;
 const SPAWN_DISTANCE = 200;
+const STARTING_LIFES = 3;
 
 playScreen.init = () => {
   // Create players
-  Game.player = new Ship(...p1Spawn, playerKeys, playerVectors, 1.5, Game.laser1);
+  Game.player = new Ship(...p1Spawn, playerKeys, playerVectors, 1.5, Game.firePlayer);
   Game.player.updateRotation(Math.random()*Math.PI*2);
   Game.asteroids = [];
-  Game.saucer = new Ship(0, 0, {}, saucerVectors, 5, Game.laser1);
+  Game.saucer = new Ship(0, 0, {}, saucerVectors, 5, Game.fireSaucer);
   Game.saucer.updateRotation(Math.PI*2);
   Game.saucer.dead = true;
   Game.saucer.hidden = true;
   Game.score = new Score(20, 20, 2);
   Game.lifeIndicator = [];
+  Game.level = 1;
+  Game.life = STARTING_LIFES;
   for (let i=0; i<Game.life; i++) {
     let indicator = new ShipCursor([[30+20*i, 60]], playerVectors, 1.5)
     indicator.updateRotation(3*Math.PI/2);
     Game.lifeIndicator.push(indicator);
   }
   playScreen.interval = false;
+  playScreen.newLifeAt = NEW_LIFE_SCORE;
+  playScreen.loadAsteroids = true;
 }
 
 playScreen.draw = function () {
@@ -142,13 +146,17 @@ playScreen.update = function () {
   });
   removeAsteroids.forEach(value => Game.asteroids.splice(value, 1))
   // go to the next level
-  if (Game.asteroids.length === 0) {
-    Game.level++;
-    while (Game.asteroids.length < LEVEL_BASE+Game.level) {
-      let asteroid = randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED);
-      let playerDistance = Math.hypot(asteroid.x - Game.player.x, asteroid.y - Game.player.y);
-      if (playerDistance > SPAWN_DISTANCE) Game.asteroids.push(asteroid);
-    }
+  if (Game.asteroids.length === 0 && Game.saucer.dead && playScreen.loadAsteroids) {
+    setTimeout(() => {
+      Game.level++;
+      while (Game.asteroids.length < LEVEL_BASE+Game.level) {
+        let asteroid = randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED);
+        let playerDistance = Math.hypot(asteroid.x - Game.player.x, asteroid.y - Game.player.y);
+        if (playerDistance > SPAWN_DISTANCE) Game.asteroids.push(asteroid);
+      }
+      playScreen.loadAsteroids = true;
+    }, 1000)
+    playScreen.loadAsteroids = false;
   }
   // check if saucer is dead and schedule a spawn
   if (Game.saucer.dead && !playScreen.sauceScheduled) {
@@ -170,8 +178,9 @@ playScreen.update = function () {
     }
   }
   // Add new life when reaches a score
-  if (Game.score.score >= newLifeAt) {
-    newLifeAt += NEW_LIFE_SCORE;
+  if (Game.score.score >= playScreen.newLifeAt) {
+    playScreen.newLifeAt += NEW_LIFE_SCORE;
+    Game.extraShip();
     Game.life++;
     let indicator = new ShipCursor([[30+20*Game.lifeIndicator.length, 60]], playerVectors, 1.5)
     indicator.updateRotation(3*Math.PI/2);
@@ -215,7 +224,7 @@ playScreen.spawnPlayer = () => {
   }
   Game.player.resetSprite(x, y)
   playScreen.interval = false;
-  Game.player = new Ship(x, y, playerKeys, playerVectors, 1.5, Game.laser1);
+  Game.player = new Ship(x, y, playerKeys, playerVectors, 1.5, Game.firePlayer);
   Game.player.updateRotation(Math.random()*Math.PI*2);
 }
 
@@ -227,7 +236,7 @@ playScreen.spawnSaucer = () => {
       playScreen.spawnSaucer();
       return;
   }
-  Game.saucer = new Ship(x, y, {}, saucerVectors, saucerSize, Game.laser1);
+  Game.saucer = new Ship(x, y, {}, saucerVectors, saucerSize, Game.fireSaucer);
   Game.saucer.updateRotation(Math.PI)
   Game.saucer.updateRotation = (angle) => Game.saucer.rotation = angle;
   Game.saucer.thrustersLength = 0;
@@ -236,6 +245,7 @@ playScreen.spawnSaucer = () => {
   Game.saucer.shotInterval = SHOT_INTERVAL*10;
   Game.saucer.thrustersAcceleration = THRUSTERS_ACCELERATION/2;
   Game.saucer.blastSize = BLAST_SIZE/2;
+  Game.saucer.thrustSound = (saucerSize===BIG_SAUCER?Game.saucerBig:Game.saucerSmall);
   playScreen.sauceScheduled = false;
 }
 playScreen.rotateVector = (vector, angle) => {
@@ -266,7 +276,6 @@ playScreen.checkCollision = function(sprite1, sprite2) {
   const p2top = Math.min(...p2cTR.map(value => value[1]))
   const p2bottom = Math.max(...p2cTR.map(value => value[1]))
   // Check if shadows overlap in both axes
-  // console.log(p1left, p1right, p1top, p1bottom, p2left, p2right, p2top, p2bottom);
   if (p2left < p1right && p1left < p2right && p2top < p1bottom && p1top < p2bottom) return true;
   return false;
 }
