@@ -5,6 +5,7 @@ let app = express();
 let pg = require('pg');
 
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('port', (process.env.PORT || 5000));
 app.use(express.static(__dirname + '/docs'));
 app.get('/highscores', getHighScores);
@@ -30,6 +31,7 @@ function getHighScores(req, res) {
 
 function postHighScores(req, res, next) {
   const player = req.body
+  console.log(req.body);
   pg.connect(process.env.DATABASE_URL, (err, client, done) => {
     if (err) {
       return next(err)
@@ -41,10 +43,10 @@ function postHighScores(req, res, next) {
         if (err) {
           return next(err)
         }
-        res.send(200)
+        res.sendStatus(200)
       });
     } else {
-      res.send(400)
+      res.sendStatus(400)
     }
   });
 }
