@@ -19,17 +19,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 "use strict";
 
-var gameOverPositions = [[170, 420], [180, 470], [230, 520]];
-var startScreenPositions = [[230, 310], [170, 360], [210, 410]];
+const gameOverPositions = [[170, 420], [180, 470], [230, 520]]
+const startScreenPositions = [[230, 310], [170, 360], [210, 410]]
 
-creditsScreen.init = function () {
+creditsScreen.init = () => {
   creditsScreen.asteroids = makeAsteroids(3, 0, 1);
-};
-creditsScreen.draw = function () {
+}
+creditsScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
-  creditsScreen.asteroids.forEach(function (asteroid) {
-    return asteroid.draw();
-  });
+  creditsScreen.asteroids.forEach(asteroid => asteroid.draw());
   // draw board
   // add text
   writeCentered(50, "asteroids", 4);
@@ -51,27 +49,23 @@ creditsScreen.draw = function () {
 
   writeCentered(550, "esc - go back");
   writeCentered(570, VERSION);
-};
-creditsScreen.update = function () {
-  creditsScreen.asteroids.forEach(function (asteroid) {
-    return asteroid.update();
-  });
+}
+creditsScreen.update = () => {
+  creditsScreen.asteroids.forEach(asteroid => asteroid.update());
   if (Key.isDown(27)) {
-    Game.extraShip();
+      Game.extraShip();
     Game.changeState(startScreen);
   }
-};
+}
 
-startScreen.init = function () {
+startScreen.init = () => {
   startScreen.arrow = new ShipCursor(startScreenPositions, playerVectors, 3);
   startScreen.asteroids = makeAsteroids(5, 3, 3);
-};
-startScreen.draw = function () {
+}
+startScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
-  startScreen.asteroids.forEach(function (asteroid) {
-    return asteroid.draw();
-  });
-  startScreen.arrow.draw();
+  startScreen.asteroids.forEach(asteroid => asteroid.draw());
+  startScreen.arrow.draw()
   writeCentered(80, "asteroids", 5, 5);
   writeCentered(150, "almost from scratch", 2.7);
   writeCentered(300, "start", 2);
@@ -80,60 +74,54 @@ startScreen.draw = function () {
   writeCentered(500, "enter - go        esc - go back", 1);
   writeCentered(520, "controls - arrows and spacebar", 1);
   writeCentered(560, VERSION);
-};
-startScreen.update = function () {
-  startScreen.arrow.update();
-  startScreen.asteroids.forEach(function (asteroid) {
-    return asteroid.update();
-  });
+}
+startScreen.update = () => {
+  startScreen.arrow.update()
+  startScreen.asteroids.forEach(asteroid => asteroid.update());
   if (Key.isDown(13)) {
     if (Game.keyTimeout > Date.now()) return;
-    Game.keyTimeout = Date.now() + 200;
+    Game.keyTimeout = Date.now()+200;
     Game.extraShip();
-    if (startScreen.arrow.current === 0) Game.changeState(playScreen);else if (startScreen.arrow.current === 1) Game.changeState(highScoreScreen);else if (startScreen.arrow.current === 2) Game.changeState(creditsScreen);
+    if (startScreen.arrow.current === 0) Game.changeState(playScreen);
+    else if (startScreen.arrow.current === 1) Game.changeState(highScoreScreen);
+    else if (startScreen.arrow.current === 2) Game.changeState(creditsScreen);
   }
-};
+}
 
-gameOverScreen.init = function () {
+gameOverScreen.init = () => {
   gameOverScreen.arrow = new ShipCursor(gameOverPositions, playerVectors, 3);
   gameOverScreen.asteroids = makeAsteroids(2, 2, 2);
   gameOverScreen.cursor = 0;
   gameOverScreen.name = "";
-  setInterval(function () {
+  setInterval(() => {
     gameOverScreen.blink = true;
-    setTimeout(function () {
-      return gameOverScreen.blink = false;
-    }, 400);
+    setTimeout(() => gameOverScreen.blink = false, 400)
   }, 800);
-};
-gameOverScreen.draw = function () {
+}
+gameOverScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
-  gameOverScreen.asteroids.forEach(function (asteroid) {
-    return asteroid.draw();
-  });
-  gameOverScreen.arrow.draw();
+  gameOverScreen.asteroids.forEach(asteroid => asteroid.draw());
+  gameOverScreen.arrow.draw()
   writeCentered(60, "GAME OVER", 5);
   writeCentered(120, 'HIGH SCORE', 3);
   writeCentered(180, Game.score.score.toString(), 5);
   writeCentered(280, gameOverScreen.name, 5);
   if (gameOverScreen.blink) {
-    writeCentered(330, "-".repeat(gameOverScreen.name === "" ? 4 : gameOverScreen.name.length * 4), 1);
+    writeCentered(330, "-".repeat(gameOverScreen.name===""?4:gameOverScreen.name.length*4), 1);
   }
   writeCentered(360, "Enter your initials", 1.5);
   writeCentered(410, "Save score", 2);
   writeCentered(460, "play again", 2);
   writeCentered(510, "menu", 2);
   writeCentered(570, VERSION);
-};
-gameOverScreen.update = function () {
-  gameOverScreen.arrow.update();
-  gameOverScreen.asteroids.forEach(function (asteroid) {
-    return asteroid.update();
-  });
-  if (Game.keyTimeout > Date.now()) return;
-  Game.keyTimeout = Date.now() + 150;
-  for (var i = 48; i <= 90; i++) {
-    if (Key.isDown(i) && gameOverScreen.name.length <= 5) {
+}
+gameOverScreen.update = () => {
+  gameOverScreen.arrow.update()
+  gameOverScreen.asteroids.forEach(asteroid => asteroid.update());
+  if (Game.keyTimeout > Date.now()) return
+  Game.keyTimeout = Date.now()+150;
+  for (let i=48; i<=90; i++) {
+    if (Key.isDown(i) && gameOverScreen.name.length<=5) {
       gameOverScreen.name += String.fromCharCode(i);
     }
   }
@@ -142,51 +130,46 @@ gameOverScreen.update = function () {
   }
   if (Key.isDown(13)) {
     Game.extraShip();
-    if (gameOverScreen.arrow.current === 0) gameOverScreen.postScore();else if (gameOverScreen.arrow.current === 1) Game.changeState(playScreen);else if (gameOverScreen.arrow.current === 2) Game.changeState(startScreen);
+    if (gameOverScreen.arrow.current === 0) gameOverScreen.postScore();
+    else if (gameOverScreen.arrow.current === 1) Game.changeState(playScreen);
+    else if (gameOverScreen.arrow.current === 2) Game.changeState(startScreen);
   } else if (Key.isDown(27)) {
     Game.extraShip();
     Game.changeState(playScreen);
   }
-};
-gameOverScreen.postScore = function () {
+}
+gameOverScreen.postScore = () => {
   // shhhh, pretend you didn't see this
   if (gameOverScreen.alreadyPosted) return;
   gameOverScreen.alreadyPosted = true;
-  $.post("/sendscore", { "name": gameOverScreen.name, "score": parseInt(Game.score.score) }).done(function () {
-    return Game.changeState(highScoreScreen);
-  });
-};
+  $.post("/sendscore", {"name": gameOverScreen.name, "score": parseInt(Game.score.score)})
+    .done(() => Game.changeState(highScoreScreen));
+}
 
-highScoreScreen.init = function () {
+highScoreScreen.init = () => {
   highScoreScreen.asteroids = makeAsteroids(3, 0, 1);
   highScoreScreen.scores = [];
-  $.get("/highscores", function (data) {
-    return highScoreScreen.scores = data;
-  });
-};
-highScoreScreen.draw = function () {
+  $.get("/highscores", data => highScoreScreen.scores = data);
+}
+highScoreScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
-  highScoreScreen.asteroids.forEach(function (asteroid) {
-    return asteroid.draw();
-  });
+  highScoreScreen.asteroids.forEach(asteroid => asteroid.draw());
   writeCentered(50, "asteroids", 4);
   writeCentered(100, "almost from scratch", 2);
   writeCentered(150, "high scores", 2);
-  for (var i = 0; i < 8; i++) {
+  for (let i=0; i<8; i++) {
     if (highScoreScreen.scores[i] === undefined) break;
-    var value = highScoreScreen.scores[i];
-    writeText(180, 200 + 40 * i, value.name + ":", 2, 2);
-    writeText(320, 200 + 40 * i, value.score.toString(), 2, 2);
+    let value = highScoreScreen.scores[i]
+    writeText(180, 200+40*i, value.name+":", 2, 2);
+    writeText(320, 200+40*i, value.score.toString(), 2, 2);
   }
   writeCentered(550, "esc - go back");
   writeCentered(570, VERSION);
-};
-highScoreScreen.update = function () {
-  highScoreScreen.asteroids.forEach(function (asteroid) {
-    return asteroid.update();
-  });
+}
+highScoreScreen.update = () => {
+  highScoreScreen.asteroids.forEach(asteroid => asteroid.update());
   if (Key.isDown(27)) {
     Game.extraShip();
     Game.changeState(startScreen);
   }
-};
+}

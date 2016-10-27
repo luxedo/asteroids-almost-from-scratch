@@ -4,8 +4,8 @@
   "description": "This is an attempt of reproducing the game asteroids using modern programming languages.",
   "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "build": "babel docs/js docs/test"
+    "start": "babel docs/lib -d docs/js && heroku local web",
+    "build": "babel docs/lib -d docs/js"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
@@ -34,6 +34,7 @@
   },
   "homepage": "https://github.com/ArmlessJohn404/asteroids-almost-from-scratch#readme",
   "devDependencies": {
-    "babel-cli": "^6.18.0"
+    "babel-cli": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0"
   }
 }

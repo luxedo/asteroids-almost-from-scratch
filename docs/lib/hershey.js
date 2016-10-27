@@ -1,6 +1,4 @@
-"use strict";
-
-var alphabeth = {
+const alphabeth = {
   "A": "9MWRMNV RRMVV RPSTS",
   "B": "16MWOMOV ROMSMUNUPSQ ROQSQURUUSVOV",
   "C": "11MXVNTMRMPNOPOSPURVTVVU",
@@ -59,4 +57,4 @@ var alphabeth = {
   "&": "21LXVRURTSSURVOVNUNSORRQSPSNRMPMONOPQSSUUVVV",
   "<": "3NUTVORTN",
   ">": "3NUOVTRON"
-};
+}

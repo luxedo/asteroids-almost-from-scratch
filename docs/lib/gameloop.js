@@ -20,31 +20,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 "use strict";
 
 // keyboard handler
-
-var Key = {
+let Key = {
   _pressed: {},
-  isDown: function isDown(keyCode) {
-    return this._pressed[keyCode];
-  },
-  onKeydown: function onKeydown(event) {
-    this._pressed[event.keyCode] = true;
-  },
-  onKeyup: function onKeyup(event) {
-    delete this._pressed[event.keyCode];
-  }
+  isDown: function(keyCode) {return this._pressed[keyCode]},
+  onKeydown: function(event) {this._pressed[event.keyCode] = true},
+  onKeyup: function(event) {delete this._pressed[event.keyCode]},
 };
-window.addEventListener('keyup', function (event) {
-  Key.onKeyup(event);
-}, false);
-window.addEventListener("keydown", function (event) {
+window.addEventListener('keyup', (event) => { Key.onKeyup(event) }, false);
+window.addEventListener("keydown", (event) => {
   Key.onKeydown(event);
-  if ([32, 37, 38, 39, 40, 13].indexOf(event.keyCode) > -1) {
-    event.preventDefault();
-  }
+  if([32, 37, 38, 39, 40, 13].indexOf(event.keyCode) > -1) {event.preventDefault()}
 }, false);
 
 // Game object
-var Game = {
+let Game = {
   fps: 60,
   width: 600,
   height: 600,
@@ -54,58 +43,52 @@ var Game = {
 };
 
 // Screens objects
-var playScreen = {};
-var gameOverScreen = {};
-var startScreen = {};
-var creditsScreen = {};
-var highScoreScreen = {};
+let playScreen = {}
+let gameOverScreen = {}
+let startScreen = {}
+let creditsScreen = {}
+let highScoreScreen = {}
 
 // Sounds assets
-var extraShipURL = "assets/extraShip.wav";
-var saucerSmallURL = "assets/saucerSmall.wav";
-var saucerBigURL = "assets/saucerSmall.wav";
-var thrustURL = "assets/thrust.wav";
-var fireURL = "assets/fire.wav";
-var bangSmallURL = "assets/bangSmall.wav";
-var bangMediumURL = "assets/bangMedium.wav";
-var bangLargeURL = "assets/bangLarge.wav";
-var beat1URL = "assets/beat1.wav";
-var beat2URL = "assets/beat2.wav";
+let extraShipURL = "assets/extraShip.wav";
+let saucerSmallURL = "assets/saucerSmall.wav";
+let saucerBigURL = "assets/saucerSmall.wav";
+let thrustURL  = "assets/thrust.wav";
+let fireURL  = "assets/fire.wav";
+let bangSmallURL  = "assets/bangSmall.wav";
+let bangMediumURL  = "assets/bangMedium.wav";
+let bangLargeURL  = "assets/bangLarge.wav";
+let beat1URL  = "assets/beat1.wav";
+let beat2URL  = "assets/beat2.wav";
 
 // sound factory
 function soundFactory(audio, overide, start, stop) {
-  return function () {
+  return () => {
     if (audio.paused) {
       audio.currentTime = start || 0;
       audio.play();
-      if (stop) setTimeout(function () {
-        return audio.pause();
-      }, stop);
+      if (stop) setTimeout(() => audio.pause(), stop)
     } else if (overide) {
       audio.pause();
       audio.currentTime = start || 0;
       audio.play();
     }
-  };
+  }
 }
 
-Game._onEachFrame = function () {
+Game._onEachFrame = (function() {
   if (window.RequestAnimationFrame) {
-    return function (cb) {
-      var _cb = function _cb() {
-        cb();window.RequestAnimationFrame(_cb);
-      };
+   return (cb) => {
+      let _cb = () => { cb(); window.RequestAnimationFrame(_cb)}
       _cb();
     };
   } else {
-    return function (cb) {
-      setInterval(cb, 1000 / Game.fps);
-    };
+    return (cb) => {setInterval(cb, 1000 / Game.fps)}
   }
-}();
+})();
 
 // Game methods
-Game.start = function () {
+Game.start = function() {
   Game.canvas = document.createElement("canvas"); // Create canvas
   Game.canvas.setAttribute("id", "game");
   Game.canvas.width = Game.width;
@@ -146,27 +129,26 @@ Game.start = function () {
   Game._onEachFrame(Game.run);
 };
 
-Game.changeState = function (screen) {
+Game.changeState = function(screen) {
   Game.keyTimeout = Date.now() + 200;
   screen.init();
   Game.draw = screen.draw;
   Game.update = screen.update;
-};
+}
 
-Game.run = function () {
-  var loops = 0,
-      skipTicks = 1000 / Game.fps,
+Game.run = (function() {
+  let loops = 0, skipTicks = 1000 / Game.fps,
       maxFrameSkip = 10,
-      nextGameTick = new Date().getTime(),
-      lastGameTick = void 0;
-  return function () {
+      nextGameTick = (new Date).getTime(),
+      lastGameTick;
+  return () => {
     loops = 0;
-    while (new Date().getTime() > nextGameTick) {
+    while ((new Date).getTime() > nextGameTick) {
       Game.update();
       nextGameTick += skipTicks;
       loops++;
     }
 
     if (loops) Game.draw();
-  };
-}();
+  }
+})();
