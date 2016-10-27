@@ -154,7 +154,6 @@ gameOverScreen.update = function () {
 gameOverScreen.postScore = function () {
   // shhhh, pretend you didn't see this
   if (gameOverScreen.alreadyPosted) return;
-  console.log(gameOverScreen.name);
   if (gameOverScreen.name === "") {
     gameOverScreen.askForName = true;
     setTimeout(function () {

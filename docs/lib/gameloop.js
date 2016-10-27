@@ -50,27 +50,30 @@ let creditsScreen = {}
 let highScoreScreen = {}
 
 // Sounds assets
-let extraShipURL = "assets/extraShip.wav";
-let saucerSmallURL = "assets/saucerSmall.wav";
-let saucerBigURL = "assets/saucerSmall.wav";
+let extraShipURL = "assets/life.wav";
+let saucerSmallURL = "assets/ssaucer.wav";
+let saucerBigURL = "assets/lsaucer.wav";
 let thrustURL  = "assets/thrust.wav";
 let fireURL  = "assets/fire.wav";
-let bangSmallURL  = "assets/bangSmall.wav";
-let bangMediumURL  = "assets/bangMedium.wav";
-let bangLargeURL  = "assets/bangLarge.wav";
-let beat1URL  = "assets/beat1.wav";
-let beat2URL  = "assets/beat2.wav";
+let fireSaucerURL  = "assets/sfire.wav";
+let bangSmallURL  = "assets/explode3.wav";
+let bangMediumURL  = "assets/explode2.wav";
+let bangLargeURL  = "assets/explode1.wav";
+let beat1URL  = "assets/thumphi.wav";
+let beat2URL  = "assets/thumplo.wav";
 
 // sound factory
 function soundFactory(audio, overide, start, stop) {
   return () => {
-    if (audio.paused) {
-      audio.currentTime = start || 0;
-      audio.play();
-      if (stop) setTimeout(() => audio.pause(), stop)
-    } else if (overide) {
+    if (start !== undefined && stop !== undefined && audio.paused) {
       audio.pause();
-      audio.currentTime = start || 0;
+      audio.currentTime = start;
+      audio.play();
+      setTimeout(() => audio.pause(), stop);
+    }
+    else if (audio.paused || audio.currentTime/audio.duration > 0.9 || overide) {
+      audio.pause();
+      audio.currentTime = 0;
       audio.play();
     }
   }
@@ -102,7 +105,7 @@ Game.start = function() {
   Game.saucerBigSound = new Audio(saucerBigURL);
   Game.thrustSound = new Audio(thrustURL);
   Game.firePlayerSound = new Audio(fireURL);
-  Game.fireSaucerSound = new Audio(fireURL);
+  Game.fireSaucerSound = new Audio(fireSaucerURL);
   Game.bangSmallSound = new Audio(bangSmallURL);
   Game.bangMediumSound = new Audio(bangMediumURL);
   Game.bangLargeSound = new Audio(bangLargeURL);
@@ -110,9 +113,9 @@ Game.start = function() {
   Game.beat2Sound = new Audio(beat2URL);
 
   Game.extraShip = soundFactory(Game.extraShipSound);
-  Game.saucerSmall = soundFactory(Game.saucerSmallSound, false, 0, 120);
-  Game.saucerBig = soundFactory(Game.saucerBigSound, false, 0, 120);
-  Game.thrust = soundFactory(Game.thrustSound);
+  Game.saucerSmall = soundFactory(Game.saucerSmallSound, false, 0, 130);
+  Game.saucerBig = soundFactory(Game.saucerBigSound, false, 0, 130);
+  Game.thrust = soundFactory(Game.thrustSound, false, 0, 300);
   Game.firePlayer = soundFactory(Game.firePlayerSound, true);
   Game.fireSaucer = soundFactory(Game.fireSaucerSound);
   Game.bangSmall = soundFactory(Game.bangSmallSound);
@@ -124,7 +127,7 @@ Game.start = function() {
   // run loop
   Game.changeState(startScreen);
   Game.changeState(playScreen);
-  Game.changeState(gameOverScreen);
+  // Game.changeState(gameOverScreen);
   // Game.changeState(highScoreScreen);
   Game._onEachFrame(Game.run);
 };

@@ -202,12 +202,12 @@ var BaseSprite = function () {
 
     this.x = x;
     this.y = y;
+    this.size = size;
     this.shape = shape.map(function (value0) {
       return value0.map(function (value1) {
-        return [value1[0] * size, value1[1] * size];
+        return [value1[0] * _this.size, value1[1] * _this.size];
       });
     });
-    this.size = size;
     this.speedX = 0;
     this.speedY = 0;
     this.hidden = false;
@@ -256,10 +256,10 @@ var BaseSprite = function () {
       this.y += this.speedY;
 
       // border collision
-      if (this.x < 0) this.x = 600;
-      if (this.x > 600) this.x = 0;
-      if (this.y < 0) this.y = 600;
-      if (this.y > 600) this.y = 0;
+      if (this.x <= 0) this.x = Game.width;
+      if (this.x > Game.width) this.x = 0;
+      if (this.y <= 0) this.y = 600;
+      if (this.y > Game.height) this.y = 0;
     }
   }, {
     key: "resetSprite",
@@ -711,4 +711,38 @@ var Score = function () {
   }]);
 
   return Score;
+}();
+
+var Debris = function () {
+  function Debris(x, y, speedX, speedY) {
+    _classCallCheck(this, Debris);
+
+    this.debrisArray = [];
+    this.hidden = false;
+    for (var i = 0; i < 10; i++) {
+      this.debrisArray.push(new BaseSprite(x, y, [[[0, 0], [0, 1]]], 10));
+      this.debrisArray[i].speedX = speedX + Math.random() - 0.5;
+      this.debrisArray[i].speedY = speedY + Math.random() - 0.5;
+      this.debrisArray[i].updateRotation(Math.random() * Math.PI * 2);
+    }
+  }
+
+  _createClass(Debris, [{
+    key: "update",
+    value: function update() {
+      this.debrisArray.forEach(function (value) {
+        return value.update();
+      });
+    }
+  }, {
+    key: "draw",
+    value: function draw() {
+
+      this.debrisArray.forEach(function (value) {
+        return value.draw();
+      });
+    }
+  }]);
+
+  return Debris;
 }();

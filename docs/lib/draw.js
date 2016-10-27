@@ -149,8 +149,8 @@ class BaseSprite {
   constructor(x, y, shape, size) {
     this.x = x;
     this.y = y;
-    this.shape = shape.map(value0 => value0.map(value1 => [value1[0]*size, value1[1]*size]));
     this.size = size;
+    this.shape = shape.map(value0 => value0.map(value1 => [value1[0]*this.size, value1[1]*this.size]));
     this.speedX = 0;
     this.speedY = 0;
     this.hidden = false;
@@ -180,10 +180,10 @@ class BaseSprite {
     this.y += this.speedY;
 
     // border collision
-    if (this.x < 0) this.x = 600;
-    if (this.x > 600) this.x = 0;
-    if (this.y < 0) this.y = 600;
-    if (this.y > 600) this.y = 0;
+    if (this.x <= 0) this.x = Game.width;
+    if (this.x > Game.width) this.x = 0;
+    if (this.y <= 0) this.y = 600;
+    if (this.y > Game.height) this.y = 0;
   }
   get rear() {
     let retval = this.rotateVector([this.left+this.center[0], (this.top+this.bottom)/2+this.center[1]]);
@@ -491,5 +491,25 @@ class Score {
   }
   draw() {
     writeText(this.x, this.y, this.score.toString(), this.size);
+  }
+}
+
+class Debris {
+  constructor(x, y, speedX, speedY) {
+    this.debrisArray = [];
+    this.hidden = false;
+    for (let i=0; i<10; i++) {
+      this.debrisArray.push(new BaseSprite(x, y, [[[0, 0], [0, 1]]], 10));
+      this.debrisArray[i].speedX = speedX+Math.random()-0.5;
+      this.debrisArray[i].speedY = speedY+Math.random()-0.5;
+      this.debrisArray[i].updateRotation(Math.random()*Math.PI*2)
+    }
+  }
+  update() {
+    this.debrisArray.forEach(value => value.update());
+  }
+  draw() {
+
+    this.debrisArray.forEach(value => value.draw());
   }
 }

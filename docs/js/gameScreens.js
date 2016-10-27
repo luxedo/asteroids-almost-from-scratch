@@ -35,12 +35,13 @@ var BIG_ASTEROID = 12;
 var MED_ASTEROID = 6;
 var SMA_ASTEROID = 3;
 var ASTEROID_MAX_SPEED = 3;
-var SAUCER_SCHEDULE = 8000;
+var SAUCER_SCHEDULE = 600;
 var saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 0]], [[2, 1], [2.5, 2], [3.5, 2], [4, 1]], [[-1, 0], [7, 0]]];
 var LEVEL_BASE = 3;
 var NEW_LIFE_SCORE = 10000;
 var SPAWN_DISTANCE = 200;
 var STARTING_LIFES = 3;
+var HALO_SIZE = 70;
 
 playScreen.init = function () {
   // Create players
@@ -51,6 +52,8 @@ playScreen.init = function () {
   Game.saucer.updateRotation(Math.PI * 2);
   Game.saucer.dead = true;
   Game.saucer.hidden = true;
+  Game.debris = new Debris(Game.player.x, Game.player.y, Game.player.speedX, Game.player.speedY);
+  Game.debris.hidden = true;
   Game.score = new Score(20, 20, 2);
   Game.lifeIndicator = [];
   Game.level = 1;
@@ -73,12 +76,18 @@ playScreen.draw = function () {
     return value.draw();
   });
   if (!Game.saucer.hidden) Game.saucer.draw();
+  if (!Game.debris.hidden) Game.debris.draw();
+
   Game.score.draw();
   Game.lifeIndicator.forEach(function (value) {
     return value.draw();
   });
   if (!document.hasFocus()) {
     writeCentered(Game.height / 2, "PAUSED", 4);
+  }
+  if (playScreen.spawnHalo) {
+    drawCircle(Game.player.x, Game.player.y, playScreen.haloSize);
+    playScreen.haloSize *= 0.90;
   }
 };
 
@@ -91,11 +100,13 @@ playScreen.update = function () {
     return;
   }
   // update sprites
-  Game.player.update();
   Game.asteroids.forEach(function (value) {
     return value.update();
   });
-  Game.saucer.update();
+  if (!Game.debris.hidden) Game.debris.update();
+  if (!Game.saucer.hidden) Game.saucer.update();
+  Game.player.update();
+  Game.debris.update();
 
   // check for collision
   Game.asteroids.forEach(function (asteroid) {
@@ -174,6 +185,11 @@ playScreen.update = function () {
   if (Game.player.dead && !playScreen.interval) {
     // game over when out of lifes
     playScreen.interval = true;
+    Game.player.hidden = true;
+    Game.debris = new Debris(Game.player.x, Game.player.y, Game.player.speedX, Game.player.speedY);
+    setTimeout(function () {
+      return Game.debris.hidden = true;
+    }, 2000);
     if (Game.life <= 1) {
       setTimeout(function () {
         return Game.changeState(gameOverScreen);
@@ -181,7 +197,6 @@ playScreen.update = function () {
     } else {
       Game.life--;
       Game.lifeIndicator.pop();
-      Game.player.hidden = true;
       setTimeout(playScreen.spawnPlayer, 1000);
     }
   }
@@ -230,8 +245,12 @@ playScreen.spawnPlayer = function () {
     playScreen.spawnPlayer();
     return;
   }
-  Game.player.resetSprite(x, y);
   playScreen.interval = false;
+  playScreen.haloSize = HALO_SIZE;
+  playScreen.spawnHalo = true;
+  setTimeout(function () {
+    return playScreen.spawnHalo = false;
+  }, 5000);
   Game.player = new Ship(x, y, playerKeys, playerVectors, 1.5, Game.firePlayer);
   Game.player.updateRotation(Math.random() * Math.PI * 2);
 };

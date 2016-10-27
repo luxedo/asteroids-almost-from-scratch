@@ -217,14 +217,14 @@ For the webpage, I added a static page to get a list of the high scores.
 ![highscores](report-assets/highscores.png "highscores")
 
 ## Get play testers feedback, List requests/bugs
-* Fix player explosion - `me`
+* ~~Fix player explosion - `me`~~
 * ~~Footer is leaking into game-frame - `Thiago Harry`, `Ule`, `Rodrigo Mendes`~~
 * ~~Transpile code to ES5 - `permith`~~
 * ~~Add a blinking cursor for the name input - `me`, `Rodrigo Mendes`~~
-* Improve saucer and thruster sounds - `me`
+* ~~Improve saucer and thruster sounds - `me`~~
 * Improve keyboard input - `me`
 * ~~Duplicating highscore - `Ule`~~
-* Ship Spawn Effect - `Guno`, `poppij`
-* Spawned outside the screen - `Cae`, `Guno`
+* ~~Ship Spawn Effect - `Guno`, `poppij`~~
+* ~~Spawned outside the screen - `Cae`, `Guno`~~
 * ~~Query for name in `gamover` screen - `me`~~
 * Check multiple keypresses - `poppij`
