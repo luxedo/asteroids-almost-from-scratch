@@ -119,6 +119,9 @@ gameOverScreen.draw = function () {
   if (gameOverScreen.blink) {
     writeCentered(330, "-".repeat(gameOverScreen.name === "" ? 4 : gameOverScreen.name.length * 4), 1);
   }
+  if (gameOverScreen.askForName) {
+    writeCentered(280, "Please enter your name", 1);
+  }
   writeCentered(360, "Enter your initials", 1.5);
   writeCentered(410, "Save score", 2);
   writeCentered(460, "play again", 2);
@@ -151,6 +154,14 @@ gameOverScreen.update = function () {
 gameOverScreen.postScore = function () {
   // shhhh, pretend you didn't see this
   if (gameOverScreen.alreadyPosted) return;
+  console.log(gameOverScreen.name);
+  if (gameOverScreen.name === "") {
+    gameOverScreen.askForName = true;
+    setTimeout(function () {
+      return gameOverScreen.askForName = false;
+    }, 2000);
+    return;
+  }
   gameOverScreen.alreadyPosted = true;
   $.post("/sendscore", { "name": gameOverScreen.name, "score": parseInt(Game.score.score) }).done(function () {
     return Game.changeState(highScoreScreen);
