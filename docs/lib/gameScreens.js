@@ -33,7 +33,7 @@ const BIG_ASTEROID = 12;
 const MED_ASTEROID = 6;
 const SMA_ASTEROID = 3;
 const ASTEROID_MAX_SPEED = 3;
-const SAUCER_SCHEDULE = 600;
+const SAUCER_SCHEDULE = 6000;
 const saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 0]],
                        [[2, 1], [2.5, 2], [3.5, 2], [4, 1]],
                        [[-1, 0], [7, 0]]];

@@ -41,9 +41,9 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Implement pause~~
 * ~~Modify sounds~~
 * ~~Improve webpage~~
-* Get play testers feedback, List requests/bugs
-* Fix requests/bugs
-* Finished!
+* ~~Get play testers feedback, List requests/bugs~~
+* ~~Fix requests/bugs~~
+* ~~Finished!~~
 
 ## Progress Reports
 00:00 - Start! This project started October 23rd, 2016 at 17:30 (BRT). I'll be timing each step and will be placing the time it took from the beginning along with the achieved goal.
@@ -216,15 +216,44 @@ For the webpage, I added a static page to get a list of the high scores.
 
 ![highscores](report-assets/highscores.png "highscores")
 
-## Get play testers feedback, List requests/bugs
+## 16:00 - Get play testers feedback, List requests/bugs
 * ~~Fix player explosion - `me`~~
 * ~~Footer is leaking into game-frame - `Thiago Harry`, `Ule`, `Rodrigo Mendes`~~
 * ~~Transpile code to ES5 - `permith`~~
 * ~~Add a blinking cursor for the name input - `me`, `Rodrigo Mendes`~~
 * ~~Improve saucer and thruster sounds - `me`~~
-* Improve keyboard input - `me`
+* ~~Improve keyboard input - `me`~~
 * ~~Duplicating highscore - `Ule`~~
 * ~~Ship Spawn Effect - `Guno`, `poppij`~~
 * ~~Spawned outside the screen - `Cae`, `Guno`~~
 * ~~Query for name in `gamover` screen - `me`~~
-* Check multiple keypresses - `poppij`
+* ~~Check multiple keypresses - `poppij`~~
+
+## 19:00 - Fix requests/bugs
+Thanks to the playtesters for the feedback!!
+  * Caetano Sato
+  * Gustavo Ogg
+  * permith
+  * poppij
+  * Rodrigo Mendes
+  * Thiago Harry
+  * Ulisses Sato
+
+I listed the requests and fixed them (I hope so). The game got so much better with the new indicator of the spawn point and the player destruction debris are much nicer.
+The input for the High Scores is better, and the keypress events also.
+Unfortunately I wasn't able to reproduce the problem of `poppij` with multiple keypresses. I looked a little and found that it might be a hardware limitation.
+
+![explosion](report-assets/explosion.gif "explosion")
+
+## 19:00 - Finish pt1.
+Well, that was fun once again.
+This is my third game made this way, check the other ones:
+* [spacewar-almost-from-scratch](https://github.com/ArmlessJohn404/spacewar-almost-from-scratch)
+* [pong-almost-from-scratch](https://github.com/ArmlessJohn404/pong-almost-from-scratch)
+
+I think that the most valuable lesson was messing with heroku's database. Have I not created the high scores features and I would have finished in almost 12h.
+
+Since there's still 5h to complete the proposed 24h, I'm launching a patch if there's enough feedback.
+
+That's it for now!
+### Bye

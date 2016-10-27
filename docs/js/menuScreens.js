@@ -39,12 +39,9 @@ creditsScreen.draw = function () {
   writeText(50, 240, "information about the project in it's github page:", 1);
   writeCentered(280, "https://github.com/ArmlessJohn404/asteroids-almost-from-scratch", 0.8);
   writeText(50, 320, "Thanks to www.classicgaming.cc/ for the sounds", 1);
-  // writeText(50, 340, "ProjectsU012 for the sound assets.", 1);
-  // writeText(50, 360, "Thanks to the playtesters 00jknight, Baino, Maria and", 1);
-  // writeText(50, 380, "Thiago Harry", 1);
-  // writeText(50, 400, "Thanks for the support of Kaska, rgk, 8Observer8, ", 1);
-  // writeText(50, 420, "StorytellerVR and Igor Georgiev", 1);
-  // writeText(50, 440, "Thanks to Lee Reilly for the PR fixing a typo", 1);
+  writeText(50, 350, "Thanks to the playtesters Caetano Sato, ", 1);
+  writeText(50, 370, "Gustavo Ogg, permith, poppij, Rodrigo Mendes,", 1);
+  writeText(50, 390, "Thiago Harry and Ulisses Sato", 1);
   writeCentered(480, "This project is under a GNU GPL3 license. Have fun! ;)", 0.9);
   writeCentered(500, "Copyright (C) 2016  Luiz Eduardo Amaral", 0.9);
   writeCentered(520, "<luizamaral306(at)gmail.com>", 0.9);
@@ -57,7 +54,8 @@ creditsScreen.update = function () {
     return asteroid.update();
   });
   if (Key.isDown(27)) {
-    Game.extraShip();
+    Game.beat1();
+    Game.beat2();
     Game.changeState(startScreen);
   }
 };
@@ -89,7 +87,8 @@ startScreen.update = function () {
   if (Key.isDown(13)) {
     if (Game.keyTimeout > Date.now()) return;
     Game.keyTimeout = Date.now() + 200;
-    Game.extraShip();
+    Game.beat1();
+    Game.beat2();
     if (startScreen.arrow.current === 0) Game.changeState(playScreen);else if (startScreen.arrow.current === 1) Game.changeState(highScoreScreen);else if (startScreen.arrow.current === 2) Game.changeState(creditsScreen);
   }
 };
@@ -99,7 +98,8 @@ gameOverScreen.init = function () {
   gameOverScreen.asteroids = makeAsteroids(2, 2, 2);
   gameOverScreen.cursor = 0;
   gameOverScreen.name = "";
-  setInterval(function () {
+  gameOverScreen.alreadyPosted = false;
+  gameOverScreen.blinkInterval = setInterval(function () {
     gameOverScreen.blink = true;
     setTimeout(function () {
       return gameOverScreen.blink = false;
@@ -135,19 +135,16 @@ gameOverScreen.update = function () {
   });
   if (Game.keyTimeout > Date.now()) return;
   Game.keyTimeout = Date.now() + 150;
-  for (var i = 48; i <= 90; i++) {
-    if (Key.isDown(i) && gameOverScreen.name.length <= 5) {
-      gameOverScreen.name += String.fromCharCode(i);
-    }
-  }
   if (Key.isDown(8)) {
     gameOverScreen.name = gameOverScreen.name.substring(0, gameOverScreen.name.length - 1);
   }
   if (Key.isDown(13)) {
-    Game.extraShip();
+    Game.beat1();
+    Game.beat2();
     if (gameOverScreen.arrow.current === 0) gameOverScreen.postScore();else if (gameOverScreen.arrow.current === 1) Game.changeState(playScreen);else if (gameOverScreen.arrow.current === 2) Game.changeState(startScreen);
   } else if (Key.isDown(27)) {
-    Game.extraShip();
+    Game.beat1();
+    Game.beat2();
     Game.changeState(playScreen);
   }
 };
@@ -196,7 +193,8 @@ highScoreScreen.update = function () {
     return asteroid.update();
   });
   if (Key.isDown(27)) {
-    Game.extraShip();
+    Game.beat1();
+    Game.beat2();
     Game.changeState(startScreen);
   }
 };

@@ -56,6 +56,13 @@ var Game = {
 // Screens objects
 var playScreen = {};
 var gameOverScreen = {};
+gameOverScreen.keyListener = window.addEventListener("keydown", function (event) {
+  for (var i = 48; i <= 90; i++) {
+    if (event.which === i && gameOverScreen.name.length <= 5) {
+      gameOverScreen.name += String.fromCharCode(i);
+    }
+  }
+});
 var startScreen = {};
 var creditsScreen = {};
 var highScoreScreen = {};
@@ -137,12 +144,12 @@ Game.start = function () {
   Game.bangSmall = soundFactory(Game.bangSmallSound);
   Game.bangMedium = soundFactory(Game.bangMediumSound);
   Game.bangLarge = soundFactory(Game.bangLargeSound);
-  Game.beat1 = soundFactory(Game.beat1Sound);
-  Game.beat2 = soundFactory(Game.beat2Sound);
+  Game.beat1 = soundFactory(Game.beat1Sound, true);
+  Game.beat2 = soundFactory(Game.beat2Sound, true);
 
   // run loop
   Game.changeState(startScreen);
-  Game.changeState(playScreen);
+  // Game.changeState(playScreen);
   // Game.changeState(gameOverScreen);
   // Game.changeState(highScoreScreen);
   Game._onEachFrame(Game.run);

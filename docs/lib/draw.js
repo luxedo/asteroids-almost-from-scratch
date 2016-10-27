@@ -500,8 +500,8 @@ class Debris {
     this.hidden = false;
     for (let i=0; i<10; i++) {
       this.debrisArray.push(new BaseSprite(x, y, [[[0, 0], [0, 1]]], 10));
-      this.debrisArray[i].speedX = speedX+Math.random()-0.5;
-      this.debrisArray[i].speedY = speedY+Math.random()-0.5;
+      this.debrisArray[i].speedX = (speedX+Math.random()-0.5)/2;
+      this.debrisArray[i].speedY = (speedY+Math.random()-0.5)/2;
       this.debrisArray[i].updateRotation(Math.random()*Math.PI*2)
     }
   }
