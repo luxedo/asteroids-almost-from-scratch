@@ -39,7 +39,7 @@ const saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 
                        [[-1, 0], [7, 0]]];
 const LEVEL_BASE = 3;
 const NEW_LIFE_SCORE = 10000;
-const SPAWN_DISTANCE = 200;
+const SPAWN_DISTANCE = 200
 const STARTING_LIFES = 3;
 const HALO_SIZE = 70;
 
@@ -66,6 +66,7 @@ playScreen.init = () => {
   playScreen.interval = false;
   playScreen.newLifeAt = NEW_LIFE_SCORE;
   playScreen.loadAsteroids = true;
+  playScreen.spawnDistance = SPAWN_DISTANCE;
 }
 
 playScreen.draw = function () {
@@ -164,7 +165,7 @@ playScreen.update = function () {
       while (Game.asteroids.length < LEVEL_BASE+Game.level) {
         let asteroid = randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED);
         let playerDistance = Math.hypot(asteroid.x - Game.player.x, asteroid.y - Game.player.y);
-        if (playerDistance > SPAWN_DISTANCE) Game.asteroids.push(asteroid);
+        if (playerDistance > playScreen.spawnDistance) Game.asteroids.push(asteroid);
       }
       playScreen.loadAsteroids = true;
     }, 1000)
@@ -223,19 +224,21 @@ playScreen.update = function () {
 }
 
 playScreen.spawnPlayer = () => {
-  let x = Math.random()*Game.width;;
-  let y = Math.random()*Game.height;;
+  let x = Math.random()*Game.width/2 + Game.width/4;
+  let y = Math.random()*Game.height/2 + Game.height/4;
   let objectTooClose = false;
   Game.asteroids.forEach(asteroid => {
     let playerDistance = Math.hypot(asteroid.x - x, asteroid.y - y);
-    if (playerDistance < SPAWN_DISTANCE) objectTooClose = true;
+    if (playerDistance < playScreen.spawnDistance) objectTooClose = true;
   });
   let playerDistance = Math.hypot(Game.saucer.x - x, Game.saucer.y - y);
-  if (playerDistance < SPAWN_DISTANCE || objectTooClose) objectTooClose=true;
+  if (playerDistance < playScreen.spawnDistance || objectTooClose) objectTooClose=true;
   if (objectTooClose) {
-    playScreen.spawnPlayer();
+    playScreen.spawnDistance -= 5;
+    setTimeout(playScreen.spawnPlayer, 100);
     return;
   }
+  playScreen.spawnDistance = SPAWN_DISTANCE;
   playScreen.interval = false;
   playScreen.haloSize = HALO_SIZE;
   playScreen.spawnHalo = true;
@@ -248,7 +251,7 @@ playScreen.spawnSaucer = () => {
   let x = (Math.round(Math.random())? 0: Game.width);;
   let y = Math.random()*Game.height;;
   let saucerSize = (Math.random()>=0.5? BIG_SAUCER:SMA_SAUCER);
-  if (Math.hypot(Game.player.x-x, Game.player.y-y) < SPAWN_DISTANCE) {
+  if (Math.hypot(Game.player.x-x, Game.player.y-y) < playScreen.spawnDistance) {
       playScreen.spawnSaucer();
       return;
   }

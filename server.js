@@ -16,16 +16,17 @@ function getHighScores(req, res) {
   pg.connect(process.env.DATABASE_URL, (err, client, done) => {
     if (err) {
       { console.error(err); res.send([{name: 'Error', score: 0}]); }
+    } else {
+      client.query('SELECT * FROM scores ORDER BY score DESC', (err, result) => {
+        done();
+        if (err)
+        { console.error(err); res.send([{name: 'Error', score: 1}]); }
+        else
+        {
+          res.send(result.rows)
+        }
+      });
     }
-    client.query('SELECT * FROM scores ORDER BY score DESC', (err, result) => {
-      done();
-      if (err)
-       { console.error(err); res.send([{name: 'Error', score: 1}]); }
-      else
-       {
-         res.send(result.rows)
-       }
-    });
   });
 }
 

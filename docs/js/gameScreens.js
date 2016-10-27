@@ -66,6 +66,7 @@ playScreen.init = function () {
   playScreen.interval = false;
   playScreen.newLifeAt = NEW_LIFE_SCORE;
   playScreen.loadAsteroids = true;
+  playScreen.spawnDistance = SPAWN_DISTANCE;
 };
 
 playScreen.draw = function () {
@@ -169,7 +170,7 @@ playScreen.update = function () {
       while (Game.asteroids.length < LEVEL_BASE + Game.level) {
         var asteroid = randomAsteroid(BIG_ASTEROID, ASTEROID_MAX_SPEED);
         var playerDistance = Math.hypot(asteroid.x - Game.player.x, asteroid.y - Game.player.y);
-        if (playerDistance > SPAWN_DISTANCE) Game.asteroids.push(asteroid);
+        if (playerDistance > playScreen.spawnDistance) Game.asteroids.push(asteroid);
       }
       playScreen.loadAsteroids = true;
     }, 1000);
@@ -232,19 +233,21 @@ playScreen.update = function () {
 };
 
 playScreen.spawnPlayer = function () {
-  var x = Math.random() * Game.width;;
-  var y = Math.random() * Game.height;;
+  var x = Math.random() * Game.width / 2 + Game.width / 4;
+  var y = Math.random() * Game.height / 2 + Game.height / 4;
   var objectTooClose = false;
   Game.asteroids.forEach(function (asteroid) {
     var playerDistance = Math.hypot(asteroid.x - x, asteroid.y - y);
-    if (playerDistance < SPAWN_DISTANCE) objectTooClose = true;
+    if (playerDistance < playScreen.spawnDistance) objectTooClose = true;
   });
   var playerDistance = Math.hypot(Game.saucer.x - x, Game.saucer.y - y);
-  if (playerDistance < SPAWN_DISTANCE || objectTooClose) objectTooClose = true;
+  if (playerDistance < playScreen.spawnDistance || objectTooClose) objectTooClose = true;
   if (objectTooClose) {
-    playScreen.spawnPlayer();
+    playScreen.spawnDistance -= 5;
+    setTimeout(playScreen.spawnPlayer, 100);
     return;
   }
+  playScreen.spawnDistance = SPAWN_DISTANCE;
   playScreen.interval = false;
   playScreen.haloSize = HALO_SIZE;
   playScreen.spawnHalo = true;
@@ -259,7 +262,7 @@ playScreen.spawnSaucer = function () {
   var x = Math.round(Math.random()) ? 0 : Game.width;;
   var y = Math.random() * Game.height;;
   var saucerSize = Math.random() >= 0.5 ? BIG_SAUCER : SMA_SAUCER;
-  if (Math.hypot(Game.player.x - x, Game.player.y - y) < SPAWN_DISTANCE) {
+  if (Math.hypot(Game.player.x - x, Game.player.y - y) < playScreen.spawnDistance) {
     playScreen.spawnSaucer();
     return;
   }
