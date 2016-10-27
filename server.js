@@ -17,7 +17,7 @@ function getHighScores(req, res) {
     if (err) {
       { console.error(err); res.send([{name: 'Error', score: 0}]); }
     }
-    client.query('SELECT * FROM scores ORDER BY score DESC LIMIT 50', (err, result) => {
+    client.query('SELECT * FROM scores ORDER BY score DESC', (err, result) => {
       done();
       if (err)
        { console.error(err); res.send([{name: 'Error', score: 1}]); }

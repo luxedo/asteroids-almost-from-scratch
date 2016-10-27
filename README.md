@@ -41,8 +41,7 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 * ~~Implement pause~~
 * ~~Modify sounds~~
 * ~~Improve webpage~~
-* Get play testers feedback
-* List requests/bugs
+* Get play testers feedback, List requests/bugs
 * Fix requests/bugs
 * Finished!
 
@@ -180,7 +179,7 @@ It took 5 hours to convert the project to be hosted at [Heroku](https://www.hero
 ), learn a bit of [Postgres](https://www.postgresql.org/) and learn how [Heroku Postgres](https://www.heroku.com/postgres) works. Phew, it took a while longer than I expected, but it's working!
 
 I started by setting up a server with [node](https://nodejs.org/en/) and [express](http://expressjs.com/) and created some routes. I'm using [REST](https://en.wikipedia.org/wiki/Representational_state_transfer) to GET and POST
-the high scores. I didn't put the effort to make an authentication, so my API is completly exposed.
+the high scores. I didn't put the effort to make an authentication, so my API is compvarly exposed.
 
 ```javascript
 let express = require('express')
@@ -216,3 +215,16 @@ sound asset doesn't like to be called while it's playing.
 For the webpage, I added a static page to get a list of the high scores.
 
 ![highscores](report-assets/highscores.png "highscores")
+
+## Get play testers feedback, List requests/bugs
+* Fix player explosion - `me`
+* ~~Footer is leaking into game-frame - `Thiago Harry`, `Ule`, `Rodrigo Mendes`~~
+* Transpile code to ES5 - `permith`
+* ~~Add a blinking cursor for the name input - `me`, `Rodrigo Mendes`~~
+* Improve saucer and thruster sounds - `me`
+* Improve keyboard input - `me`
+* ~~Duplicating highscore - `Ule`~~
+* Ship Spawn Effect - `Guno`, `poppij`
+* Spawned outside the screen - `Cae`, `Guno`
+* Query for name in `gamover` screen - `me`
+* Check multiple keypresses - `poppij`

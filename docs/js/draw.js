@@ -59,12 +59,12 @@ function drawPoint(x, y, width=1, color=VECTOR_COLOR) {
   drawArray([[x, y], [x+width, y+width]], width+1)
 }
 
-function parseLetter(letter) {
-  let limits = alphabeth[letter]
+function parsevarter(varter) {
+  let limits = alphabeth[varter]
     .match(/\D{2}/)[0]
     .split("")
     .map((value) => value.charCodeAt(0)-82);
-  let coordinates = alphabeth[letter]
+  let coordinates = alphabeth[varter]
     .replace(/\d/g, "")
     .split(" ")
     .map((value, index) => (index === 0? value.slice(2): value.slice(1)))
@@ -81,8 +81,8 @@ function parseLetter(letter) {
 function phraseLength(phrase, size) {
   // returns the final position of a phrase
   let lastPosition = 0;
-  phrase.split("").forEach((letter) => {
-      let [coordinates, finalPosition] = parseLetter(letter.toUpperCase());
+  phrase.split("").forEach((varter) => {
+      let [coordinates, finalPosition] = parsevarter(varter.toUpperCase());
       lastPosition += finalPosition;
   });
   return lastPosition*size;
@@ -90,8 +90,8 @@ function phraseLength(phrase, size) {
 
 function writeText(x, y, text, size=1, width=2, color=VECTOR_COLOR) {
   let lastPosition = 0;
-  text.split("").forEach((letter) => {
-      let [coordinates, finalPosition] = parseLetter(letter.toUpperCase());
+  text.split("").forEach((varter) => {
+      let [coordinates, finalPosition] = parsevarter(varter.toUpperCase());
       coordinates.forEach((value) => {
         value = value.map(element => [element[0]*size+x+lastPosition*size, element[1]*size+y])
         drawArray(value, width, color)
@@ -130,7 +130,7 @@ function randomAsteroid(size, maxSpeed, x, y) {
   if (y === undefined) {
     y = (quadrant==1?0:(quadrant==3?Game.width:Math.random()*Game.width));
   }
-  let rotationSpeed = Math.random()*Math.PI/45-Math.PI/90;
+  let rotationSpeed = Math.random()*Math.PI/36-Math.PI/72;
   let speedX = Math.random()*maxSpeed - maxSpeed/2;
   let speedY = Math.random()*maxSpeed - maxSpeed/2;
   return new Asteroid(x, y, makeAsteroidVectors(), size, rotationSpeed, speedX, speedY)

@@ -25,8 +25,7 @@ function startGame() {
   if ('withCredentials' in new XMLHttpRequest() || typeof XDomainRequest !== "undefined" ) {
       /* supports cross-domain requests */
       //Use IE-specific "CORS" code with XDR
-
-  } else if (true) {
+  } else {
     //Time to retreat with a fallback or polyfill
     $(".footer p:first").hide();
     $(".footer p:first").before(`
@@ -40,8 +39,3 @@ function startGame() {
     );
   }
 }
-
-(function checkCors() {
-  console.log('hgiii');
-
-})();

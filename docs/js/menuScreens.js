@@ -93,6 +93,10 @@ gameOverScreen.init = () => {
   gameOverScreen.asteroids = makeAsteroids(2, 2, 2);
   gameOverScreen.cursor = 0;
   gameOverScreen.name = "";
+  setInterval(() => {
+    gameOverScreen.blink = true;
+    setTimeout(() => gameOverScreen.blink = false, 400)
+  }, 800);
 }
 gameOverScreen.draw = () => {
   Game.context.clearRect(0, 0, Game.width, Game.height);
@@ -102,7 +106,9 @@ gameOverScreen.draw = () => {
   writeCentered(120, 'HIGH SCORE', 3);
   writeCentered(180, Game.score.score.toString(), 5);
   writeCentered(280, gameOverScreen.name, 5);
-  writeCentered(330, "-".repeat(gameOverScreen.name===""?4:gameOverScreen.name.length*4), 1);
+  if (gameOverScreen.blink) {
+    writeCentered(330, "-".repeat(gameOverScreen.name===""?4:gameOverScreen.name.length*4), 1);
+  }
   writeCentered(360, "Enter your initials", 1.5);
   writeCentered(410, "Save score", 2);
   writeCentered(460, "play again", 2);
@@ -134,6 +140,8 @@ gameOverScreen.update = () => {
 }
 gameOverScreen.postScore = () => {
   // shhhh, pretend you didn't see this
+  if (gameOverScreen.alreadyPosted) return;
+  gameOverScreen.alreadyPosted = true;
   $.post("/sendscore", {"name": gameOverScreen.name, "score": parseInt(Game.score.score)})
     .done(() => Game.changeState(highScoreScreen));
 }
