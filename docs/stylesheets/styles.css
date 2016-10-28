@@ -39,7 +39,6 @@ a:link, a:visited, a:hover, a:active {
 
 /*game*/
 #game {
-  margin-top: 10%;
   max-height: 80%;
   max-width: 80%;
   border-color: #FFF;
@@ -48,7 +47,7 @@ a:link, a:visited, a:hover, a:active {
 }
 
 #game-frame {
-  padding-bottom: 7em;
+  padding: 7em 0 7em;
 }
 
 /*highscores*/
