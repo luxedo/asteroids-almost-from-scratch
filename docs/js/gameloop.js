@@ -120,6 +120,10 @@ Game.start = function () {
   Game.canvas.width = Game.width;
   Game.canvas.height = Game.height;
   Game.context = Game.canvas.getContext("2d"); // Get canvas context
+  Game.context.shadowColor = "#888";
+  Game.context.shadowOffsetX = 0;
+  Game.context.shadowOffsetY = 0;
+  Game.context.shadowBlur = 20;
   document.getElementById("game-frame").appendChild(Game.canvas); // Add canvas to game-frame
 
   // Sounds
