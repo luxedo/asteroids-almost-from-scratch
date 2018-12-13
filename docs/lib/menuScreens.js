@@ -35,7 +35,7 @@ creditsScreen.draw = () => {
   writeText(50, 200, "This is an attempt of making the game asteroids using", 1);
   writeText(50, 220, "modern programming languages. You can find more", 1);
   writeText(50, 240, "information about the project in it's github page:", 1);
-  writeCentered(280, "https://github.com/ArmlessJohn404/asteroids-almost-from-scratch", 0.8);
+  writeCentered(280, "https://github.com/luxedo/asteroids-almost-from-scratch", 0.8);
   writeText(50, 320, "Thanks to www.classicgaming.cc/ for the sounds", 1);
   writeText(50, 350, "Thanks to the playtesters Caetano Sato, ", 1);
   writeText(50, 370, "Gustavo Ogg, permith, poppij, Rodrigo Mendes,", 1);

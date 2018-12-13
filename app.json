@@ -1,7 +1,7 @@
 {
   "name": "asteroids-almost-from-scratch",
   "description": "This is an attempt of reproducing the game asteroids using modern programming languages.",
-  "repository": "git+https://github.com/ArmlessJohn404/asteroids-almost-from-scratch.git",
+  "repository": "git+https://github.com/luxedo/asteroids-almost-from-scratch.git",
   "logo": "docs/images/assets/",
   "keywords": ["asteroids", "game", "vintage"]
 }

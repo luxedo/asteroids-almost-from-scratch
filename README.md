@@ -5,7 +5,7 @@ This is an attempt of reproducing the game [asteroids](https://en.wikipedia.org/
 
 The game is based in `html5 canvas`, `CSS` and `ES6 javascript`. No extra libraries or engines will be used.
 
-Since I've already worked on a project to reproduce [spacewar-almost-from-scratch](https://armlessjohn404.github.io/spacewar-almost-from-scratch/), I'll be using much of it in here. If you want to see how it was done, check it out on [GitHub](https://github.com/ArmlessJohn404/spacewar-almost-from-scratch).
+Since I've already worked on a project to reproduce [spacewar-almost-from-scratch](https://luxedo.github.io/spacewar-almost-from-scratch/), I'll be using much of it in here. If you want to see how it was done, check it out on [GitHub](https://github.com/luxedo/spacewar-almost-from-scratch).
 
 ## GOALS
 * ~~Add `LICENSE.md` and `README.md~~
@@ -52,10 +52,10 @@ Since I've already worked on a project to reproduce [spacewar-almost-from-scratc
 This project is under a [GNU GPL3](https://www.gnu.org/licenses/gpl-3.0.en.html) license. Have fun! :wink:
 
 ## 00:15 - Host somewhere
-For now, I'll be hosting it in [github pages](https://pages.github.com/) since it's easy deploy. Check it out [here](https://armlessjohn404.github.io/asteroids-almost-from-scratch/)
+For now, I'll be hosting it in [github pages](https://pages.github.com/) since it's easy deploy. Check it out [here](https://luxedo.github.io/asteroids-almost-from-scratch/)
 
 ## 00:30 - Copy the `spacewar` files
-Since this game is also made with vector graphics, I copied the [spacewar](https://armlessjohn404.github.io/spacewar-almost-from-scratch/) I made to the project folder and changed the favicon, the main color and a few tweaks. In the end it was looking like this:
+Since this game is also made with vector graphics, I copied the [spacewar](https://luxedo.github.io/spacewar-almost-from-scratch/) I made to the project folder and changed the favicon, the main color and a few tweaks. In the end it was looking like this:
 
 ![spacewar copy](report-assets/spacewar-copy.png "spacewar copy")
 
@@ -248,8 +248,8 @@ Unfortunately I wasn't able to reproduce the problem of `poppij` with multiple k
 ## 19:00 - Finish pt1.
 Well, that was fun once again.
 This is my third game made this way, check the other ones:
-* [spacewar-almost-from-scratch](https://github.com/ArmlessJohn404/spacewar-almost-from-scratch)
-* [pong-almost-from-scratch](https://github.com/ArmlessJohn404/pong-almost-from-scratch)
+* [spacewar-almost-from-scratch](https://github.com/luxedo/spacewar-almost-from-scratch)
+* [pong-almost-from-scratch](https://github.com/luxedo/pong-almost-from-scratch)
 
 I think that the most valuable lesson was messing with heroku's database. Have I not created the high scores features and I would have finished in almost 12h.
 
