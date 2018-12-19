@@ -56,8 +56,7 @@ For now, I'll be hosting it in [github pages](https://pages.github.com/) since i
 
 ## 00:30 - Copy the `spacewar` files
 Since this game is also made with vector graphics, I copied the [spacewar](https://luxedo.github.io/spacewar-almost-from-scratch/) I made to the project folder and changed the favicon, the main color and a few tweaks. In the end it was looking like this:
-https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/asteroid-class.gif
-![spacewar copy](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/spacewar-copy.png "spacewar copy")
+![spacewar copy](report-assets/spacewar-copy.png "spacewar copy")
 
 ## 00:45 - Make screens square
 Asteroids have a square screen, so I removed the stars and the round mask of the spacewar.
@@ -66,8 +65,8 @@ Asteroids have a square screen, so I removed the stars and the round mask of the
 The game does not have the `blackhole` (star) in the middle as `Spacewar` has, so it has been removed along with the gravity mechanics. Also, I don't want to add a 2 player mode because in the original game the players took turns playing. Instead I'll try to make a online highscore.
 
 ## 01:20 - Modify `Ship` class
-The ship sprite is much simpler in Asteroids. So it was easy to draw: ![ship](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/ship.png "ship")
-![ship thrusters](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/ship-thrusters.png "ship thrusters"). I changed some properties to make the ship more agile and interesting to play.
+The ship sprite is much simpler in Asteroids. So it was easy to draw: ![ship](report-assets/ship.png "ship")
+![ship thrusters](report-assets/ship-thrusters.png "ship thrusters"). I changed some properties to make the ship more agile and interesting to play.
 ```javascript
 const player1Vectors = [[[5, 0], [-4, -3], [-3, -2], [-3, 2], [-4, 3], [5, 0]]];
 ```
@@ -94,12 +93,12 @@ function makeAsteroidVectors() {
 Luckly for me, in the constructor, I have made the vectors translate to make the centroid of the object the coordinates (0, 0), then it's easy to rotate the object around the centroid. And there's also a scaler in the constructor to chose the size of the objects which came in handy to make asteroids of different sizes.
 This is the end result
 
-![asteroid class](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/asteroid-class.gif "asteroid class")
+![asteroid class](report-assets/asteroid-class.gif "asteroid class")
 
 ## 03:10 - Create `Saucer` class and draw saucers
 Instead of making a `Saucer` class, I'm recycling the `Ship` class and will control it in the gameloop.
 The vectors for the
-![saucer](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/saucer.png "saucer") are:
+![saucer](report-assets/saucer.png "saucer") are:
 ```javascript
 const saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 0]],
                        [[2, 1], [2.5, 2], [3.5, 2], [4, 1]],
@@ -109,7 +108,7 @@ const saucerVectors = [[[-1, 0], [1, 1], [5, 1], [7, 0], [5, -1], [1, -1], [-1, 
 ## 03:20 - Create `Score` class
 The score class is super simple, it took 10 min to make and test it.
 
-![score](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/score.png "score")
+![score](report-assets/score.png "score")
 ```javascript
 class Score {
   constructor(x, y, size) {
@@ -155,24 +154,24 @@ Right now, October 24rd, 2016 at 00:45 (BRT), I'm giving a break from the projec
 ## 06:45 - Create life mechanics
 The life mechanics could have been a class, but I opted for implementing all in the gameloop. I used the `ShipCursor` class and an array to draw ships bellow the score that indicates the life of the player. Now the game is playable and looks like this:
 
-![game so far](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/game-so-far.gif "game so far")
+![game so far](report-assets/game-so-far.gif "game so far")
 
 ## 07:30 - Implement saucer AI
 The saucer AI was also salvaged from `spacewar`, the main change is that the saucer is much slower and the shots interval is much higher.
 
-![saucer ai](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/saucer-ai.gif "saucer ai")
+![saucer ai](report-assets/saucer-ai.gif "saucer ai")
 
 ## 08:00 - Modify menu screens
 All the screens were partially done, so it was just a matter of changing the text and the position of some stuff. I added a few asteroids in the screens to make them look more interesting.
 
-![new screens](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/new-screens.gif "new screens")
+![new screens](report-assets/new-screens.gif "new screens")
 
 ## 08:40 Create high score screen
 I copied the `credits screen` and modified it to make the `high score screen`. At this point I didn't worry about how I'm connecting the high scores with some server.
 Also, I added a space for the player to put his/hers name in the `game over screen`.
 
-![high score screen](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/high-score-screen.png "high score screen")
-![game over name](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/gameover-name.png "game over name")
+![high score screen](report-assets/high-score-screen.png "high score screen")
+![game over name](report-assets/gameover-name.png "game over name")
 
 ## 14:00 - Find someplace to host high scores
 It took 5 hours to convert the project to be hosted at [Heroku](https://www.heroku.com/
@@ -214,7 +213,7 @@ sound asset doesn't like to be called while it's playing.
 ## 15:40 - Improve webpage
 For the webpage, I added a static page to get a list of the high scores.
 
-![highscores](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/highscores.png "highscores")
+![highscores](report-assets/highscores.png "highscores")
 
 ## 16:00 - Get play testers feedback, List requests/bugs
 * ~~Fix player explosion - `me`~~
@@ -243,7 +242,7 @@ I listed the requests and fixed them (I hope so). The game got so much better wi
 The input for the High Scores is better, and the keypress events also.
 Unfortunately I wasn't able to reproduce the problem of `poppij` with multiple keypresses. I looked a little and found that it might be a hardware limitation.
 
-![explosion](https://raw.githubusercontent.com/luxedo/asteroids-almost-from-scratch/master/report-assets/explosion.gif "explosion")
+![explosion](report-assets/explosion.gif "explosion")
 
 ## 19:00 - Finish pt1.
 Well, that was fun once again.
